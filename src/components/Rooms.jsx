@@ -5,13 +5,15 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import { FaChevronRight, FaChevronLeft } from 'react-icons/fa';
 import { SpinnerDotted } from 'spinners-react'
+import axios from 'axios';
 
 const Rooms = () => {
-  const { rooms, loading } = useContext(RoomContext);
+  const { loading } = useContext(RoomContext);
   const [slidesToShow, setSlidesToShow] = useState(3);
-  const [arrowSize, setArrowSize] = useState('text-2xl'); // Default arrow size
-  const [arrowLeft, setArrowLeft] = useState('-left-5'); // Default left arrow position
-  const [arrowRight, setArrowRight] = useState('-right-10'); // Default right arrow position
+  const [arrowSize, setArrowSize] = useState('text-2xl')
+  const [arrowLeft, setArrowLeft] = useState('-left-5')
+  const [arrowRight, setArrowRight] = useState('-right-10')
+  const [jenisKamarData, setJenisKamarData] = useState([])
 
   const NextArrow = ({ onClick }) => (
     <div className="custom-arrow next cursor-pointer" onClick={onClick}>
@@ -41,15 +43,15 @@ const Rooms = () => {
 
   const updateSlidesToShow = () => {
     if (window.innerWidth < 640) {
-      setSlidesToShow(1);
-      setArrowSize('text-2xl'); // Adjust arrow size for smaller screens
-      setArrowLeft('-left-1'); // Adjust left arrow position for smaller screens
-      setArrowRight('-right-7'); // Adjust right arrow position for smaller screens
+      setSlidesToShow(1)
+      setArrowSize('text-2xl')
+      setArrowLeft('-left-1')
+      setArrowRight('-right-7')
     } else {
       setSlidesToShow(3);
-      setArrowSize('text-2xl'); // Default arrow size for larger screens
-      setArrowLeft('-left-5'); // Default left arrow position for larger screens
-      setArrowRight('-right-10'); // Default right arrow position for larger screens
+      setArrowSize('text-2xl')
+      setArrowLeft('-left-5')
+      setArrowRight('-right-10')
     }
   };
 
@@ -61,22 +63,32 @@ const Rooms = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const apiURL = "http://localhost:8000/api/jenisKamar";
+
+    axios
+      .get(apiURL)
+      .then((response) => {
+        console.log(JSON.stringify(response.data.mess, null, 2))
+        setJenisKamarData(response.data.mess)
+      })
+      .catch((error) => {
+        console.error("Error fetching jenis kamar data: ", error);
+      });
+  }, [])
+
   return (
-    <section className='py-24'>
+    <section>
       {loading && (
         <div className='h-screen fixed bottom-0 top-0 bg-black/90 w-full z-50 flex justify-center'>
           <SpinnerDotted color='white'/>
         </div>
       )}
       <div className='container mx-auto lg:px-0'>
-        <div className='text-center'>
-            <div className='font-tertiary uppercase text-[15px] tracking-[6px]'>5-STAR LUXURY MEETS SOPHISTICATED DESIGN</div>
-            <h2 className='font-primary text-[45px] mb-4'>Room & Suites</h2>
-        </div>
         <Slider {...settings} className='lg:hidden'>
-          {rooms.map((room) => (
-            <div key={room.id} className='p-2'>
-              <Room room={room} />
+          {jenisKamarData.map((room, index) => (
+            <div key={room.id} className='pb-4 px-2'>
+              <Room room={room} imageIndex={index} />
             </div>
           ))}
         </Slider>

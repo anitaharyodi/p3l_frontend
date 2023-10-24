@@ -9,6 +9,7 @@ const RoomProvider = ({ children }) => {
     const [adults, setAdults] = useState('1 Adults')
     const [kids, setKids] = useState('0 Kids')
     const [loading, setLoading] = useState(false)
+    const [isLogin, setIsLogin] = useState(false)
 
     useEffect(() => {
         setTotal(Number(adults[0]) + Number(kids[0]))
@@ -19,7 +20,7 @@ const RoomProvider = ({ children }) => {
         console.log(total)
     }
 
-  return <RoomContext.Provider value={{rooms, adults, setAdults, kids, setKids, handleClick, loading, setLoading}}>{children}</RoomContext.Provider>
+  return <RoomContext.Provider value={{rooms, adults, setAdults, kids, setKids, handleClick, loading, setLoading, isLogin, setIsLogin}}>{children}</RoomContext.Provider>
 }
 
 export default RoomProvider

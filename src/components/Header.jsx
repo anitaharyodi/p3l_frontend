@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import assets from "../assets";
 import { Link } from "react-router-dom";
+import AvatarLogin from "./AvatarLogin";
+import { RoomContext } from "../context/RoomContext";
 
 const Header = () => {
-  const [header, setHeader] = useState(false);
+  const {isLogin} = useContext(RoomContext)
+  const [header, setHeader] = useState(false)
+
   useEffect(() => {
     window.addEventListener("scroll", () => {
       window.scrollY > 50 ? setHeader(true) : setHeader(false);
@@ -24,7 +28,11 @@ const Header = () => {
           <a href="/" className="hover:text-[#D0C379] transition">Home</a>
           <a href="" className="hover:text-[#D0C379] transition">Rooms</a>
           <a href="" className="hover:text-[#D0C379] transition">Contact</a>
-          <Link to="/login" className="btn btn-primary h-10 rounded-md mx-auto">Login</Link>
+          {isLogin ? (
+            <AvatarLogin/>
+          ): <Link to="/login" className="btn btn-primary h-10 rounded-md mx-auto">Login</Link>}
+          
+          
         </nav>
       </div>
     </header>

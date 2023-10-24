@@ -1,14 +1,67 @@
-import React from "react";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import { BsArrowsFullscreen, BsPeople } from "react-icons/bs";
-import { Link } from "react-router-dom";
-const Room = ({ room }) => {
-  const { id, name, image, size, maxPerson, description, price } = room;
+import { Link, useNavigate } from "react-router-dom";
+import { RoomContext } from "../context/RoomContext";
+import assets from "../assets";
+
+const roomImages = [assets.ROOM4, assets.ROOM2, assets.ROOM3, assets.ROOM1];
+
+const Room = ({ room, imageIndex }) => {
+  const navigate = useNavigate();
+  const {
+    id,
+    jenis_kamar,
+    ukuran_kamar,
+    kapasitas,
+    tarif_normal,
+    rincian_kamar,
+    tipe_bed,
+    deskripsi_kamar,
+  } = room;
+  const imageUrl = roomImages[imageIndex];
+
+  const formatCurrencyIDR = (amount) => {
+    const formatter = new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    });
+
+    return formatter.format(amount).replace("Rp", "IDR");
+  };
+
+  const navigateToRoomDetails = (
+    roomId,
+    roomImage,
+    jenis_kamar,
+    ukuran_kamar,
+    kapasitas,
+    tarif_normal,
+    rincian_kamar,
+    tipe_bed,
+    deskripsi_kamar
+  ) => {
+    navigate(`/room/${roomId}`, {
+      state: {
+        roomImage,
+        jenis_kamar,
+        ukuran_kamar,
+        kapasitas,
+        tarif_normal,
+        rincian_kamar,
+        tipe_bed,
+        deskripsi_kamar,
+      },
+    });
+  };
+
   return (
-    <div className="bg-white shadow-lg min-h-[580px] group">
+    <div className="bg-white shadow-lg  lg:min-h-[480px] group">
       <div className="overflow-hidden">
         <img
           className="group-hover:scale-110 transition-all duration-300 w-full"
-          src={image}
+          src={imageUrl}
           alt=""
         />
       </div>
@@ -22,7 +75,7 @@ const Room = ({ room }) => {
             <div className="flex gap-x-1">
               <div>Size</div>
               <div>
-                {size} m<sup>2</sup>
+                {ukuran_kamar} m<sup>2</sup>
               </div>
             </div>
           </div>
@@ -33,31 +86,40 @@ const Room = ({ room }) => {
             </div>
             <div className="flex gap-x-1">
               <div>MAX PEOPLE</div>
-              <div>{maxPerson}</div>
+              <div>{kapasitas}</div>
             </div>
           </div>
         </div>
       </div>
       <div className="text-center">
         <Link to={`/room/${id}`}>
-          <h3 className="h3">{name}</h3>
+          <h3 className="h3">{jenis_kamar}</h3>
         </Link>
-        <p className="max-w-[300px] mx-auto mb-3 lg:mb-6">
-          {description.slice(0, 56)}
-        </p>
-        <div className="max-w-[300px] mx-auto mb-3 lg:mb-6">
+        <div className="max-w-[300px] mx-auto mb-3 lg:mb-6 text-[16px]">
           Tonight's rate :{" "}
-          <span className="uppercase font-tertiary tracking-[1px] font-semibold text-base text-[20px] text-[#1E2131] inline-block p-1">
-            IDR {price}
+          <span className="uppercase font-tertiary tracking-[1px] font-semibold text-base text-[22px] text-[#1E2131] inline-block p-1">
+            {formatCurrencyIDR(tarif_normal)}
           </span>
         </div>
       </div>
-      <Link
-        to={`/room/${id}`}
-        className="btn btn-secondary btn-sm max-w-[300px] mx-auto"
+      <button
+        onClick={() =>
+          navigateToRoomDetails(
+            id,
+            roomImages[imageIndex],
+            jenis_kamar,
+            ukuran_kamar,
+            kapasitas,
+            tarif_normal,
+            rincian_kamar,
+            tipe_bed,
+            deskripsi_kamar
+          )
+        }
+        className="btn btn-secondary btn-sm max-w-[300px] lg:w-[300px] mx-auto"
       >
         Book now
-      </Link>
+      </button>
     </div>
   );
 };
