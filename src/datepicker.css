@@ -5,6 +5,7 @@
     font-family: 'Barlow';
     border: 1px solid #aa8453;
     font-size: 0.9rem;
+    margin-top: -200px;
   }
   .react-datepicker__header {
     border: #aa8453;

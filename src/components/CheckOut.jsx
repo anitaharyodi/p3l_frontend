@@ -20,6 +20,7 @@ const CheckOut = () => {
           selected={endDate}
           placeholderText="Check Out"
           onChange={(date) => setEndDate(date)}
+          popperPlacement="top-end"
         />
       </div>
     </div>

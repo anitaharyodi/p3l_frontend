@@ -11,10 +11,10 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <NextUIProvider>
     <RoomProvider>
-      <React.StrictMode>
+      {/* <React.StrictMode> */}
         <App />
         <ToastContainer/>
-      </React.StrictMode>
+      {/* </React.StrictMode> */}
     </RoomProvider>
   </NextUIProvider>
 );

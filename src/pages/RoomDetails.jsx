@@ -24,6 +24,7 @@ const RoomDetails = () => {
     : null;
   const rincian_kamar_array = rincian_kamar.split("\r\n");
   const deskripsi_kamar_array = deskripsi_kamar.split("\r\n");
+  const tipe_bed_array = tipe_bed.split("\r\n").join(', ');
   const oddArray = [];
   const evenArray = [];
 
@@ -34,7 +35,7 @@ const RoomDetails = () => {
       oddArray.push(item);
     }
   });
-  console.log(JSON.stringify(oddArray, null, 2));
+  console.log(JSON.stringify(tipe_bed_array, null, 2));
   console.log(JSON.stringify(evenArray, null, 2));
 
   const formatCurrencyIDR = (amount) => {
@@ -70,7 +71,7 @@ const RoomDetails = () => {
               <span className="font-semibold">{jenis_kamar} Room</span> boasts a
               spacious {ukuran_kamar} square meters, providing ample space for
               you to relax and savor your special moments. The available bed
-              type is {tipe_bed}, ensuring unmatched comfort for a restful
+              type is {tipe_bed_array}, ensuring unmatched comfort for a restful
               sleep. After a long day, you can indulge in the luxury of the
               lavish bed.
             </p>
@@ -87,7 +88,10 @@ const RoomDetails = () => {
                 <span className="font-normal">{kapasitas} person</span>
               </li>
               <li className="mb-8 font-semibold -mt-5">
-                Bed Type : <span className="font-normal">{tipe_bed}</span>
+                Bed Type : <span className="font-normal">
+                    {tipe_bed_array}
+
+                  </span>
               </li>
             </ul>
 

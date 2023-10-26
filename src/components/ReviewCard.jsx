@@ -20,11 +20,11 @@ const ReviewCard = ({ name, rating, review }) => {
         </div>
         <div className="flex items-center">
           <AiFillStar className="text-orange-400 text-xl" />
-          <span className="text-small ml-1">{rating}</span>
+          <span className="text-small ml-1 font-medium">{rating} / 5</span>
         </div>
       </CardHeader>
 
-      <CardBody className="px-3 py-0 text-small text-default-400 flex items-center">
+      <CardBody className="px-3 py-0 text-small text-default-900 flex items-center">
         <p>{review}</p>
       </CardBody>
     </Card>

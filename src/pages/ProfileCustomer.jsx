@@ -145,8 +145,8 @@ const ProfileCustomer = () => {
 
   return (
     <section>
-      <ScrollToTop/>
-      <div className="relative h-[260px]">
+      <ScrollToTop />
+      <div className="relative h-[360px]">
         <img
           className="object-cover w-full h-full"
           src={assets.BGPROFILE}
@@ -154,7 +154,7 @@ const ProfileCustomer = () => {
         />
         <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black/50"></div>
         <div className="container mx-auto flex flex-col items-center">
-          <div className="rounded-full overflow-hidden w-[200px] h-[200px] -mt-[100px] relative">
+          <div className="rounded-full overflow-hidden w-[200px] h-[200px] -mt-[140px] relative">
             <Image
               src={assets.LOGOAJABG}
               alt="Profile"
@@ -163,8 +163,8 @@ const ProfileCustomer = () => {
           </div>
         </div>
       </div>
-      <div className="container mx-auto flex flex-col items-center mt-[100px]">
-        <h1 className="text-2xl mt-4 font-semibold font-tertiary tracking-[2px] uppercase">
+      <div className="container mx-auto flex flex-col items-center mt-[60px]">
+        <h1 className="text-2xl mt-4 font-semibold font-primary tracking-[2px] uppercase">
           {name}
         </h1>
         <p className="text-lg">{email}</p>
@@ -178,13 +178,22 @@ const ProfileCustomer = () => {
         <Card className="py-4 w-full h-full my-8">
           <CardHeader className="pb-0 pt-2 px-4 flex-col items-end text-right">
             {editMode ? (
-              <Button
-                variant="solid"
-                className="font-semibold bg-accent text-white"
-                onClick={openProfileModal}
-              >
-                Save
-              </Button>
+              <div className="flex">
+                <Button
+                  variant="bordered"
+                  className="font-semibold border-1 border-accent text-accent mr-4"
+                  onClick={() => setEditMode(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="solid"
+                  className="font-semibold bg-accent text-white"
+                  onClick={openProfileModal}
+                >
+                  Save
+                </Button>
+              </div>
             ) : (
               <Button
                 variant="solid"
@@ -195,6 +204,7 @@ const ProfileCustomer = () => {
               </Button>
             )}
           </CardHeader>
+
           <CardBody className="overflow-visible py-2 flex flex-col">
             {editMode ? (
               <>

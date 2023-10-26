@@ -41,7 +41,7 @@ const MyBooking = () => {
       .catch((error) => {
         console.error("Error fetching data from the API: " + error);
       });
-  }, []);
+  }, [authToken]);
 
   return (
     <section>

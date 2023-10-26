@@ -20,6 +20,7 @@ const CheckIn = () => {
           selected={startDate}
           placeholderText="Check In"
           onChange={(date) => setStartDate(date)}
+          popperPlacement="top-end"
         />
       </div>
     </div>
