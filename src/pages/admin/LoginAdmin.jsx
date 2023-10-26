@@ -67,6 +67,7 @@ const LoginAdmin = () => {
         localStorage.setItem("tokenPegawai", response.data.auth.token);
         localStorage.setItem("role", response.data.data.role);
         localStorage.setItem("emailPegawai", response.data.data.email);
+        localStorage.setItem("idPegawai", response.data.data.id);
         const emailLocal = localStorage.getItem("emailPegawai");
         const getRole = localStorage.getItem("role");
         console.log("EMAIL", getRole);

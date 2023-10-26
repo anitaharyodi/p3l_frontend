@@ -349,7 +349,7 @@ const SeasonPage = () => {
       })
       .catch((error) => {
         console.error("Error updating season: ", error);
-        toast.error(error.response.data.message, {
+        toast.error(error.response.data.message.tanggal_mulai[0], {
           position: "top-right",
           hideProgressBar: true,
           theme: "colored",

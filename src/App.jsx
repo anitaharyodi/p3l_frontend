@@ -17,6 +17,7 @@ import SeasonPage from "./pages/admin/SeasonPage";
 import FasilitasPage from "./pages/admin/FasilitasPage";
 import TarifPage from "./pages/admin/TarifPage";
 import CustomerPage from "./pages/admin/CustomerPage";
+import HistoryReservation from "./pages/admin/HistoryReservation";
 
 const App = () => {
   const { setIsLogin, setIsLoginPegawai } = useContext(RoomContext);
@@ -72,6 +73,7 @@ const App = () => {
                     <Route path="fasilitas" element={<FasilitasPage />} />
                     <Route path="tarif" element={<TarifPage />} />
                     <Route path="customer" element={<CustomerPage />} />
+                    <Route path="historyReservation" element={<HistoryReservation />} />
                   </Routes>
                 </div>
               </>

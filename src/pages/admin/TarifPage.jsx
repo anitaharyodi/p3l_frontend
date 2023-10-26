@@ -56,6 +56,16 @@ const TarifPage = () => {
   const [seasonError, setSeasonError] = useState(false);
   const [tarifError, setTarifError] = useState(false);
 
+  const formatCurrencyIDR = (amount) => {
+    const formatter = new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    });
+
+    return formatter.format(amount).replace("Rp", "IDR");
+  };
+
   const {
     isOpen: createModalOpen,
     onOpen: openCreateModal,
@@ -280,7 +290,7 @@ const TarifPage = () => {
 
     const body = {
       id_season: currentTarifData.seasons.id,
-      tarif: currentTarifData.tarif,
+      tarif: currentTarifData.tarif.toString(),
       id_jenis_kamar: currentTarifData.jenis_kamars.id,
     };
 
@@ -412,30 +422,32 @@ const TarifPage = () => {
               <TableCell className="text-medium">
                 <Chip
                   className={
-                    item.jenis_kamars.jenis_kamar === "Superior"
+                    item?.jenis_kamars?.jenis_kamar === "Superior"
                       ? "bg-[#D0C379] text-white"
-                      : item.jenis_kamars.jenis_kamar === "Double Deluxe"
+                      : item?.jenis_kamars?.jenis_kamar === "Double Deluxe"
                       ? "bg-[#587889] text-white"
-                      : item.jenis_kamars.jenis_kamar === "Executive Deluxe"
+                      : item?.jenis_kamars?.jenis_kamar === "Executive Deluxe"
                       ? "bg-[#E69B35] text-white"
-                      : "bg-[#334A50] text-white"
+                      : item?.jenis_kamars?.jenis_kamar === "Junior Suite"
+                      ? "bg-[#334A50] text-white"
+                      : "bg-transparent"
                   }
                   startContent={
-                    item.jenis_kamars.jenis_kamar === "Superior" ? (
+                    item?.jenis_kamars?.jenis_kamar === "Superior" ? (
                       <TbBrandSupernova className="ml-2" />
-                    ) : item.jenis_kamars.jenis_kamar === "Double Deluxe" ? (
+                    ) : item?.jenis_kamars?.jenis_kamar === "Double Deluxe" ? (
                       <FaCheckDouble className="ml-2" />
-                    ) : item.jenis_kamars.jenis_kamar === "Executive Deluxe" ? (
+                    ) : item?.jenis_kamars?.jenis_kamar === "Executive Deluxe" ? (
                       <GiDoubled className="ml-2" />
-                    ) : (
+                    ) : item?.jenis_kamars?.jenis_kamar === "Junior Suite" ? (
                       <TiFlowChildren className="ml-2" />
-                    )
+                    ) : null
                   }
                 >
-                  {item.jenis_kamars.jenis_kamar}
+                  {item?.jenis_kamars?.jenis_kamar ? item?.jenis_kamars?.jenis_kamar : "-"}
                 </Chip>
               </TableCell>
-              <TableCell className="text-medium">{item.tarif}</TableCell>
+              <TableCell className="text-medium">{formatCurrencyIDR(item.tarif)}</TableCell>
               <TableCell className="w-[50px]">
                 <div className="relative flex items-center">
                   <Dropdown>
@@ -475,7 +487,7 @@ const TarifPage = () => {
       <Modal isOpen={createModalOpen} onOpenChange={onCreateModalOpenChange}>
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">
-            {currentTarifId ? "Edit Room" : "Add Rooms"}
+            {currentTarifId ? "Edit Tarif" : "Add Tarif"}
           </ModalHeader>
           <ModalBody>
             <div className="mb-2">
@@ -510,13 +522,13 @@ const TarifPage = () => {
             </div>
             <div className="mb-2">
               <select
-                value={currentTarifData.jenis_kamars.id}
+                value={currentTarifData?.jenis_kamars?.id}
                 className="border-2 border-gray-200 py-4 px-2 rounded-lg w-full cursor-pointer text-sm"
                 onChange={(e) => {
                   setCurrentTarifData({
                     ...currentTarifData,
                     jenis_kamars: {
-                      ...currentTarifData.jenis_kamars,
+                      ...currentTarifData?.jenis_kamars,
                       id: e.target.value,
                     },
                   });
@@ -536,10 +548,9 @@ const TarifPage = () => {
             <div className="mb-2">
               <Input
                 type="numeric"
-                label="Room Number"
+                label="Tarif"
                 variant="bordered"
-                maxLength={3}
-                errorMessage={tarifError ? "Room number cannot be empty" : ""}
+                errorMessage={tarifError ? "Tarif cannot be empty" : ""}
                 value={currentTarifData.tarif}
                 onChange={(e) => {
                   setCurrentTarifData({

@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 import assets from "../../assets";
 import { BiSolidDashboard, BiSolidLogOut } from "react-icons/bi";
 import { MdMeetingRoom } from "react-icons/md";
-import { BsFillTicketPerforatedFill, BsFillPersonFill } from "react-icons/bs";
+import { BsFillTicketPerforatedFill, BsFillPersonFill, BsGraphUp } from "react-icons/bs";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import { FaMoneyBills } from "react-icons/fa6";
 import { RoomContext } from "../../context/RoomContext";
@@ -117,8 +117,8 @@ export default function Sidebar() {
                     // to="/"
                     className="flex items-center gap-4 text-md text-white px-4 rounded-lg py-2 hover:bg-accent"
                   >
-                    <BiSolidDashboard className="text-xl" />
-                    Dashboard
+                    <BsGraphUp className="text-xl" />
+                    Report
                   </Link>
                 ) : null}
             </ul>
