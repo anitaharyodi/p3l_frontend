@@ -22,13 +22,13 @@ const RoomDetails = () => {
   const deskripsi_kamar = location.state
     ? location.state.deskripsi_kamar
     : null;
-  const rincian_kamar_array = rincian_kamar.split("\r\n");
-  const deskripsi_kamar_array = deskripsi_kamar.split("\r\n");
-  const tipe_bed_array = tipe_bed.split("\r\n").join(', ');
+  const rincian_kamar_array = rincian_kamar?.split("\r\n");
+  const deskripsi_kamar_array = deskripsi_kamar?.split("\r\n");
+  const tipe_bed_array = tipe_bed?.split("\r\n").join(', ');
   const oddArray = [];
   const evenArray = [];
 
-  deskripsi_kamar_array.forEach((item, index) => {
+  deskripsi_kamar_array?.forEach((item, index) => {
     if (index % 2 === 0) {
       evenArray.push(item);
     } else {
@@ -108,7 +108,7 @@ const RoomDetails = () => {
                 facilities, designed with your utmost satisfaction in mind.
               </p>
               <p className="mb-12">
-              {deskripsi_kamar_array.map((roomDesc, index) => (
+              {deskripsi_kamar_array?.map((roomDesc, index) => (
                 <ul className="list-disc px-5">
                   <li className="mb-8 -mt-5">
                     {roomDesc}
@@ -143,7 +143,7 @@ const RoomDetails = () => {
             <div>
               <h3 className="h3">Room Details</h3>
               <ul className="flex flex-col gap-y-4">
-                {rincian_kamar_array.map((roomDetail, index) => (
+                {rincian_kamar_array?.map((roomDetail, index) => (
                   <li className="flex items-center gap-x-4">
                     <FaCheck className="text-accent" />
                     {roomDetail}

@@ -48,7 +48,6 @@ const SeasonPage = () => {
   const [page, setPage] = useState(1);
   const rowsPerPage = 8;
 
-  const [isAddMode, setIsAddMode] = useState(false);
   const [seasonToDelete, setSeasonToDelete] = useState(null);
   const [currentSeasonId, setCurrentSeasonId] = useState(null);
   const [currentSeasonData, setCurrentSeasonData] = useState({
