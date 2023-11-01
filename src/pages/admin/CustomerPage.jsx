@@ -73,6 +73,13 @@ const CustomerPage = () => {
     onClose: closeCreateModal,
   } = useDisclosure();
 
+  const {
+    isOpen: createConfModalOpen,
+    onOpen: openCreateConfModal,
+    onOpenChange: onCreateConfModalOpenChange,
+    onClose: closeCreateConfModal,
+  } = useDisclosure();
+
   // Fetch Data history
   const fetchCustomerData = () => {
     const axiosConfig = {
@@ -215,6 +222,7 @@ const CustomerPage = () => {
           autoClose: 1000,
         });
         onCreateModalOpenChange(true);
+        onCreateConfModalOpenChange(true)
         fetchCustomerData();
         setCurrentCustomerData({
           nama: "",
@@ -229,6 +237,7 @@ const CustomerPage = () => {
       })
       .catch((error) => {
         console.error("Error adding customer data: ", error);
+        onCreateConfModalOpenChange(true)
       });
   };
 
@@ -463,10 +472,35 @@ const CustomerPage = () => {
             <button
               className="btn btn-primary h-[40px] rounded-md"
               onClick={() => {
-                  handleAddCustomer();
+                openCreateConfModal()
+                  
               }}
             >
               <IoMdAdd className="mr-2" />
+              Add
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Add Confirm */}
+      <Modal isOpen={createConfModalOpen} onOpenChange={onCreateConfModalOpenChange}>
+        <ModalContent>
+          <ModalHeader>Add Group Customer</ModalHeader>
+          <ModalBody>Are you sure you want to add this group customer?</ModalBody>
+          <ModalFooter>
+            <button
+              className="btn btn-tertiary h-[40px] rounded-md text-black"
+              onClick={() => {
+                closeCreateConfModal();
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary h-[40px] rounded-md"
+              onClick={() =>  handleAddCustomer()}
+            >
               Add
             </button>
           </ModalFooter>

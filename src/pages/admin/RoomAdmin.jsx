@@ -73,6 +73,20 @@ const RoomAdmin = () => {
     onClose: closeDeleteModal,
   } = useDisclosure();
 
+  const {
+    isOpen: editModalOpen,
+    onOpen: openEditModal,
+    onOpenChange: onEditModalOpenChange,
+    onClose: closeEditModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: createConfModalOpen,
+    onOpen: openCreateConfModal,
+    onOpenChange: onCreateConfModalOpenChange,
+    onClose: closeCreateConfModal,
+  } = useDisclosure();
+
   // Fetch Data Kamar
   const fetchRoomData = () => {
     const axiosConfig = {
@@ -249,7 +263,8 @@ const RoomAdmin = () => {
           theme: "colored",
           autoClose: 1000,
         });
-        onCreateModalOpenChange(true);
+        onCreateModalOpenChange(true)
+        onCreateConfModalOpenChange(true)
         fetchRoomData();
         setCurrentRoomData({
           no_kamar: "",
@@ -261,6 +276,7 @@ const RoomAdmin = () => {
       .catch((error) => {
         console.error("Error adding room data: ", error);
         setRoomNoErrorUnique(true)
+        onCreateConfModalOpenChange(true)
       });
   };
 
@@ -305,7 +321,8 @@ const RoomAdmin = () => {
           theme: "colored",
           autoClose: 1000,
         });
-        onCreateModalOpenChange(true);
+        onCreateModalOpenChange(true)
+        onEditModalOpenChange(true);
         fetchRoomData()
         setCurrentRoomData({
           no_kamar: "",
@@ -317,6 +334,7 @@ const RoomAdmin = () => {
       .catch((error) => {
         console.error("Error updating room: ", error);
         setRoomNoErrorUnique(true)
+        onEditModalOpenChange(true);
       });
   };
 
@@ -575,9 +593,9 @@ const RoomAdmin = () => {
               className="btn btn-primary h-[40px] rounded-md"
               onClick={() => {
                 if(currentRoomId) {
-                  handleUpdateRoom(currentRoomId)
+                  openEditModal()
                 }else {
-                  handleAddRoom();
+                  openCreateConfModal()
 
                 }
               }}
@@ -608,6 +626,54 @@ const RoomAdmin = () => {
               onClick={() => handleDeleteRoom(roomToDelete.id)}
             >
               Delete
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Edit Confirm */}
+      <Modal isOpen={editModalOpen} onOpenChange={onEditModalOpenChange}>
+        <ModalContent>
+          <ModalHeader>Edit Room</ModalHeader>
+          <ModalBody>Are you sure you want to update this room?</ModalBody>
+          <ModalFooter>
+            <button
+              className="btn btn-tertiary h-[40px] rounded-md text-black"
+              onClick={() => {
+                closeEditModal();
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary h-[40px] rounded-md"
+              onClick={() => handleUpdateRoom(currentRoomId)}
+            >
+              Update
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Add Confirm */}
+      <Modal isOpen={createConfModalOpen} onOpenChange={onCreateConfModalOpenChange}>
+        <ModalContent>
+          <ModalHeader>Add Room</ModalHeader>
+          <ModalBody>Are you sure you want to add this room?</ModalBody>
+          <ModalFooter>
+            <button
+              className="btn btn-tertiary h-[40px] rounded-md text-black"
+              onClick={() => {
+                closeCreateConfModal();
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary h-[40px] rounded-md"
+              onClick={() =>  handleAddRoom()}
+            >
+              Add
             </button>
           </ModalFooter>
         </ModalContent>

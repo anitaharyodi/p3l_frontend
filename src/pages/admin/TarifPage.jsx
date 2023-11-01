@@ -80,6 +80,20 @@ const TarifPage = () => {
     onClose: closeDeleteModal,
   } = useDisclosure();
 
+  const {
+    isOpen: editModalOpen,
+    onOpen: openEditModal,
+    onOpenChange: onEditModalOpenChange,
+    onClose: closeEditModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: createConfModalOpen,
+    onOpen: openCreateConfModal,
+    onOpenChange: onCreateConfModalOpenChange,
+    onClose: closeCreateConfModal,
+  } = useDisclosure();
+
   // Fetch Data Tarif
   const fetchTarifData = () => {
     const axiosConfig = {
@@ -256,6 +270,7 @@ const TarifPage = () => {
           autoClose: 1000,
         });
         onCreateModalOpenChange(true);
+        onCreateConfModalOpenChange(true)
         fetchTarifData();
         setCurrentTarifData({
           seasons: { id: "", nama_season: "" },
@@ -266,6 +281,7 @@ const TarifPage = () => {
       })
       .catch((error) => {
         console.error("Error adding tarif data: ", error);
+        onCreateConfModalOpenChange(true)
       });
   };
 
@@ -310,6 +326,7 @@ const TarifPage = () => {
           autoClose: 1000,
         });
         onCreateModalOpenChange(true);
+        onEditModalOpenChange(true);
         fetchTarifData();
         setCurrentTarifData({
           seasons: { id: "", nama_season: "" },
@@ -320,6 +337,7 @@ const TarifPage = () => {
       })
       .catch((error) => {
         console.error("Error updating tarif: ", error);
+        onEditModalOpenChange(true);
       });
   };
 
@@ -584,9 +602,11 @@ const TarifPage = () => {
               className="btn btn-primary h-[40px] rounded-md"
               onClick={() => {
                 if (currentTarifId) {
-                  handleUpdateTarif(currentTarifId);
+                  openEditModal()
+                  
                 } else {
-                  handleAddTarif();
+                  openCreateConfModal()
+                 
                 }
               }}
             >
@@ -616,6 +636,54 @@ const TarifPage = () => {
               onClick={() => handleDeleteTarif(tarifToDelete.id)}
             >
               Delete
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Edit Confirm */}
+      <Modal isOpen={editModalOpen} onOpenChange={onEditModalOpenChange}>
+        <ModalContent>
+          <ModalHeader>Edit Tarif</ModalHeader>
+          <ModalBody>Are you sure you want to update this tarif?</ModalBody>
+          <ModalFooter>
+            <button
+              className="btn btn-tertiary h-[40px] rounded-md text-black"
+              onClick={() => {
+                closeEditModal();
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary h-[40px] rounded-md"
+              onClick={() => handleUpdateTarif(currentTarifId)}
+            >
+              Update
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Add Confirm */}
+      <Modal isOpen={createConfModalOpen} onOpenChange={onCreateConfModalOpenChange}>
+        <ModalContent>
+          <ModalHeader>Add Tarif</ModalHeader>
+          <ModalBody>Are you sure you want to add this tarif?</ModalBody>
+          <ModalFooter>
+            <button
+              className="btn btn-tertiary h-[40px] rounded-md text-black"
+              onClick={() => {
+                closeCreateConfModal();
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary h-[40px] rounded-md"
+              onClick={() => handleAddTarif()}
+            >
+              Add
             </button>
           </ModalFooter>
         </ModalContent>

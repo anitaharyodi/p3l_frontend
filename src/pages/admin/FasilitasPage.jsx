@@ -79,6 +79,20 @@ const FasilitasPage = () => {
     onClose: closeDeleteModal,
   } = useDisclosure();
 
+  const {
+    isOpen: editModalOpen,
+    onOpen: openEditModal,
+    onOpenChange: onEditModalOpenChange,
+    onClose: closeEditModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: createConfModalOpen,
+    onOpen: openCreateConfModal,
+    onOpenChange: onCreateConfModalOpenChange,
+    onClose: closeCreateConfModal,
+  } = useDisclosure();
+
   // Fetch Data Fasilitas
   const fetchFasilitasData = () => {
     const axiosConfig = {
@@ -218,6 +232,7 @@ const FasilitasPage = () => {
           autoClose: 1000,
         });
         onCreateModalOpenChange(true);
+        onCreateConfModalOpenChange(true)
         fetchFasilitasData();
         setCurrentFasilitasData({
           nama_fasilitas: "",
@@ -228,6 +243,7 @@ const FasilitasPage = () => {
       })
       .catch((error) => {
         console.error("Error adding fasilitas data: ", error);
+        onCreateConfModalOpenChange(true)
       });
   };
 
@@ -277,6 +293,7 @@ const FasilitasPage = () => {
           autoClose: 1000,
         });
         onCreateModalOpenChange(true);
+        onEditModalOpenChange(true);
         fetchFasilitasData();
         setCurrentFasilitasData({
           nama_fasilitas: "",
@@ -287,6 +304,7 @@ const FasilitasPage = () => {
       })
       .catch((error) => {
         console.error("Error updating fasilitas: ", error);
+        onEditModalOpenChange(true);
       });
   };
 
@@ -502,9 +520,11 @@ const FasilitasPage = () => {
               className="btn btn-primary h-[40px] rounded-md"
               onClick={() => {
                 if (currentFasilitasId) {
-                  handleUpdateFasilitas(currentFasilitasId);
+                  openEditModal()
+                  
                 } else {
-                  handleAddFasilitas();
+                  openCreateConfModal()
+                  
                 }
               }}
             >
@@ -534,6 +554,54 @@ const FasilitasPage = () => {
               onClick={() => handleDeleteFasilitas(fasilitasToDelete.id)}
             >
               Delete
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Edit Confirm */}
+      <Modal isOpen={editModalOpen} onOpenChange={onEditModalOpenChange}>
+        <ModalContent>
+          <ModalHeader>Edit Facility</ModalHeader>
+          <ModalBody>Are you sure you want to update this facility?</ModalBody>
+          <ModalFooter>
+            <button
+              className="btn btn-tertiary h-[40px] rounded-md text-black"
+              onClick={() => {
+                closeEditModal();
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary h-[40px] rounded-md"
+              onClick={() => handleUpdateFasilitas(currentFasilitasId)}
+            >
+              Update
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Add Confirm */}
+      <Modal isOpen={createConfModalOpen} onOpenChange={onCreateConfModalOpenChange}>
+        <ModalContent>
+          <ModalHeader>Add Facility</ModalHeader>
+          <ModalBody>Are you sure you want to add this facility?</ModalBody>
+          <ModalFooter>
+            <button
+              className="btn btn-tertiary h-[40px] rounded-md text-black"
+              onClick={() => {
+                closeCreateConfModal();
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary h-[40px] rounded-md"
+              onClick={() =>  handleAddFasilitas()}
+            >
+              Add
             </button>
           </ModalFooter>
         </ModalContent>

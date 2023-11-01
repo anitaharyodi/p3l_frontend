@@ -76,6 +76,20 @@ const SeasonPage = () => {
     onClose: closeDeleteModal,
   } = useDisclosure();
 
+  const {
+    isOpen: editModalOpen,
+    onOpen: openEditModal,
+    onOpenChange: onEditModalOpenChange,
+    onClose: closeEditModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: createConfModalOpen,
+    onOpen: openCreateConfModal,
+    onOpenChange: onCreateConfModalOpenChange,
+    onClose: closeCreateConfModal,
+  } = useDisclosure();
+
   // Fetch Data Season
   const fetchSeasonData = () => {
     const axiosConfig = {
@@ -258,6 +272,7 @@ const SeasonPage = () => {
           autoClose: 1000,
         });
         onCreateModalOpenChange(true);
+        onCreateConfModalOpenChange(true)
         fetchSeasonData();
         setCurrentSeasonData({
           nama_season: "",
@@ -275,6 +290,7 @@ const SeasonPage = () => {
           theme: "colored",
           autoClose: 1000,
         });
+        onCreateConfModalOpenChange(true)
       });
   };
 
@@ -337,6 +353,7 @@ const SeasonPage = () => {
           autoClose: 1000,
         });
         onCreateModalOpenChange(true);
+        onEditModalOpenChange(true);
         fetchSeasonData();
         setCurrentSeasonData({
           nama_season: "",
@@ -354,6 +371,7 @@ const SeasonPage = () => {
           theme: "colored",
           autoClose: 1000,
         });
+        onEditModalOpenChange(true);
       });
   };
 
@@ -621,9 +639,11 @@ const SeasonPage = () => {
               className="btn btn-primary h-[40px] rounded-md"
               onClick={() => {
                 if (currentSeasonId) {
-                  handleUpdateSeason(currentSeasonId);
+                  openEditModal()
+                  
                 } else {
-                  handleAddSeason();
+                  openCreateConfModal()
+                  
                 }
               }}
             >
@@ -653,6 +673,54 @@ const SeasonPage = () => {
               onClick={() => handleDeleteSeason(seasonToDelete.id)}
             >
               Delete
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Edit Confirm */}
+      <Modal isOpen={editModalOpen} onOpenChange={onEditModalOpenChange}>
+        <ModalContent>
+          <ModalHeader>Edit Season</ModalHeader>
+          <ModalBody>Are you sure you want to update this season?</ModalBody>
+          <ModalFooter>
+            <button
+              className="btn btn-tertiary h-[40px] rounded-md text-black"
+              onClick={() => {
+                closeEditModal();
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary h-[40px] rounded-md"
+              onClick={() => handleUpdateSeason(currentSeasonId)}
+            >
+              Update
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Add Confirm */}
+      <Modal isOpen={createConfModalOpen} onOpenChange={onCreateConfModalOpenChange}>
+        <ModalContent>
+          <ModalHeader>Add Season</ModalHeader>
+          <ModalBody>Are you sure you want to add this season?</ModalBody>
+          <ModalFooter>
+            <button
+              className="btn btn-tertiary h-[40px] rounded-md text-black"
+              onClick={() => {
+                closeCreateConfModal();
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary h-[40px] rounded-md"
+              onClick={() =>  handleAddSeason()}
+            >
+              Add
             </button>
           </ModalFooter>
         </ModalContent>
