@@ -92,9 +92,21 @@ const Room = ({ room, imageIndex }) => {
         </div>
       </div>
       <div className="text-center">
-        <Link to={`/room/${id}`}>
+        <button onClick={() =>
+          navigateToRoomDetails(
+            id,
+            roomImages[imageIndex],
+            jenis_kamar,
+            ukuran_kamar,
+            kapasitas,
+            tarif_normal,
+            rincian_kamar,
+            tipe_bed,
+            deskripsi_kamar
+          )
+        }>
           <h3 className="h3">{jenis_kamar}</h3>
-        </Link>
+        </button>
         <div className="max-w-[300px] mx-auto mb-3 lg:mb-6 text-[16px]">
           Tonight's rate :{" "}
           <span className="uppercase font-tertiary tracking-[1px] font-semibold text-base text-[22px] text-[#1E2131] inline-block p-1">
