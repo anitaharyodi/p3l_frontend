@@ -281,6 +281,12 @@ const TarifPage = () => {
       })
       .catch((error) => {
         console.error("Error adding tarif data: ", error);
+        toast.error(error.response.data.message, {
+          position: "top-right",
+          hideProgressBar: true,
+          theme: "colored",
+          autoClose: 1000,
+        });
         onCreateConfModalOpenChange(true)
       });
   };

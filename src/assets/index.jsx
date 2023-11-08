@@ -13,7 +13,11 @@ import Room1ImgLg from './img/rooms/1-lg.png'
 import Room2ImgLg from './img/rooms/2-lg.png'
 import Room3ImgLg from './img/rooms/3-lg.png'
 import Room4ImgLg from './img/rooms/4-lg.png'
+import Room7ImgLg from './img/rooms/7-lg.png'
+import Room8ImgLg from './img/rooms/8-lg.png'
 import HotelArc from './img/hotelArc.jpg'
+import InfoIcon from './img/infoIcon.png'
+import bankDiamond from './img/diamondBank.png'
 
 export default {
     LOGO_BAWAH : LogoBawah,
@@ -31,5 +35,9 @@ export default {
     ROOM2: Room2ImgLg,
     ROOM3: Room3ImgLg,
     ROOM4: Room4ImgLg,
-    HOTELARC : HotelArc
+    ROOM7: Room7ImgLg,
+    ROOM8: Room8ImgLg,
+    HOTELARC : HotelArc,
+    INFOICON : InfoIcon,
+    DIAMONDBANK : bankDiamond
 }

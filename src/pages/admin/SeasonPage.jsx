@@ -262,6 +262,20 @@ const SeasonPage = () => {
     };
     console.log("BODYYY", body);
 
+    const isDuplicate = seasonData.some(
+      (season) => season.nama_season === currentSeasonData.nama_season
+    );
+    if (isDuplicate) {
+      toast.error("Season name must be unique", {
+        position: "top-right",
+        hideProgressBar: true,
+        theme: "colored",
+        autoClose: 1000,
+      });
+      onCreateConfModalOpenChange(true);
+      return;
+    }
+
     axios
       .post(apiURL, body, axiosConfig)
       .then((response) => {
@@ -272,7 +286,7 @@ const SeasonPage = () => {
           autoClose: 1000,
         });
         onCreateModalOpenChange(true);
-        onCreateConfModalOpenChange(true)
+        onCreateConfModalOpenChange(true);
         fetchSeasonData();
         setCurrentSeasonData({
           nama_season: "",
@@ -290,7 +304,7 @@ const SeasonPage = () => {
           theme: "colored",
           autoClose: 1000,
         });
-        onCreateConfModalOpenChange(true)
+        onCreateConfModalOpenChange(true);
       });
   };
 
@@ -639,11 +653,9 @@ const SeasonPage = () => {
               className="btn btn-primary h-[40px] rounded-md"
               onClick={() => {
                 if (currentSeasonId) {
-                  openEditModal()
-                  
+                  openEditModal();
                 } else {
-                  openCreateConfModal()
-                  
+                  openCreateConfModal();
                 }
               }}
             >
@@ -703,7 +715,10 @@ const SeasonPage = () => {
       </Modal>
 
       {/* Add Confirm */}
-      <Modal isOpen={createConfModalOpen} onOpenChange={onCreateConfModalOpenChange}>
+      <Modal
+        isOpen={createConfModalOpen}
+        onOpenChange={onCreateConfModalOpenChange}
+      >
         <ModalContent>
           <ModalHeader>Add Season</ModalHeader>
           <ModalBody>Are you sure you want to add this season?</ModalBody>
@@ -718,7 +733,7 @@ const SeasonPage = () => {
             </button>
             <button
               className="btn btn-primary h-[40px] rounded-md"
-              onClick={() =>  handleAddSeason()}
+              onClick={() => handleAddSeason()}
             >
               Add
             </button>

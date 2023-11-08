@@ -3,6 +3,7 @@ import ScrollToTop from "../components/ScrollToTop";
 import assets from "../assets";
 import CardBooking from "../components/CardBooking";
 import axios from "axios";
+import { useParams } from "react-router";
 
 const MyBooking = () => {
   const authToken = localStorage.getItem("token");
@@ -36,7 +37,7 @@ const MyBooking = () => {
           noTelepon: no_telepon,
         });
         console.log(profileData);
-        setBookingData(response.data.mess.customers.reservations);
+        setBookingData(response.data.mess.customers.reservations.reverse());
       })
       .catch((error) => {
         console.error("Error fetching data from the API: " + error);

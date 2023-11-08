@@ -4,6 +4,7 @@ import { CgEnter } from "react-icons/cg";
 import { BiLogOut } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const CardBooking = ({
   id,
@@ -20,6 +21,7 @@ const CardBooking = ({
   jmlAnak,
   uangJaminan
 }) => {
+  const navigate = useNavigate()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const authToken = localStorage.getItem("token");
   const [bookRoom, setBookRoom] = useState([]);
@@ -54,6 +56,17 @@ const CardBooking = ({
         console.error("Error fetching data from the API: " + error);
       });
   }
+
+  function countRoomsByJenisKamar(bookRoom) {
+    const counts = {};
+    for (const room of bookRoom) {
+      const jenisKamarId = room.id_jenis_kamar;
+      counts[jenisKamarId] = (counts[jenisKamarId] || 0) + 1;
+    }
+    return counts;
+  }
+ 
+  const roomCounts = countRoomsByJenisKamar(bookRoom);
   
   const columns = [
     {
@@ -96,10 +109,12 @@ const CardBooking = ({
         <h2 className="text-xl font-semibold text-[#1E2131]">{idBooking}</h2>
         <Chip
           color={
-            status === "Lunas"
+            status === "Paid"
               ? "success"
-              : status === "Menunggu Pembayaran"
+              : status === "Waiting for payment"
               ? "warning"
+              : status === "Confirmed"
+              ? "secondary"
               : status === "Check-In"
               ? "primary"
               : "danger"
@@ -142,19 +157,32 @@ const CardBooking = ({
       </div>
       {/* <div className="border-t-2 border-gray-300 mt-4"></div> */}
       <div className="flex justify-between mt-4">
-        {tglPembayaran ? (
-          <p className="text-gray-500 mt-3">Payment Date : {tglPembayaran}</p>
-        ) : (
+        {status == 'Waiting for payment' ? (
           <p className="text-gray-500 mt-3">Payment Date : -</p>
+          ) : (
+            <p className="text-gray-500 mt-3">Payment Date : {tglPembayaran}</p>
         )}
-        <Button
-          variant="solid"
-          className="font-semibold bg-[#1E2131] text-white w-[150px] mt-3"
-          onClick={openModal}
-        >
-          See Detail
-          <BsArrowRight className="font-extrabold" />
-        </Button>
+        <div>
+          {status == 'Waiting for payment' && (
+            <Button
+              variant="bordered"
+              className="font-semibold border-1 border-[#1E2131] text-[#1E2131] w-[150px] mt-3 mr-4"
+              onClick={() => navigate(`/book/${id}#payment`)}
+            >
+              Pay Now
+            </Button>
+
+          )}
+          <Button
+            variant="solid"
+            className="font-semibold bg-[#1E2131] text-white w-[150px] mt-3"
+            onClick={openModal}
+          >
+            See Detail
+            <BsArrowRight className="font-extrabold" />
+          </Button>
+
+        </div>
 
         <Modal
           isOpen={isOpen}
@@ -171,10 +199,12 @@ const CardBooking = ({
                 <h2 className="h2 text-[20px] font-bold">Booking ID #{idBooking}</h2> 
                 <Chip
                   color={
-                    status === "Lunas"
+                    status === "Paid"
                       ? "success"
-                      : status === "Menunggu Pembayaran"
+                      : status === "Waiting for payment"
                       ? "warning"
+                      : status === "Confirmed"
+                      ? "secondary"
                       : status === "Check-In"
                       ? "primary"
                       : "danger"
@@ -250,7 +280,11 @@ const CardBooking = ({
                   <p className="font-semibold">Down Payment</p>
                 </div>
                 <div>
-                  <p className="">{uangJaminan}</p>
+                  {status == "Waiting for payment" ? (
+                    <p className="">-</p>
+                    ) : (
+                    <p className="">{uangJaminan}</p>
+                  )}
                 </div>
               </div>
               <div className="flex justify-between">
@@ -258,7 +292,11 @@ const CardBooking = ({
                   <p className="font-semibold">Payment Date</p>
                 </div>
                 <div>
-                  <p className="">{tglPembayaran}</p>
+                {status == "Waiting for payment" ? (
+                    <p className="">-</p>
+                    ) : (
+                      <p className="">{tglPembayaran}</p>
+                  )}
                 </div>
               </div>
               {bookRoom.length !== 0 ? (
@@ -272,8 +310,8 @@ const CardBooking = ({
                       {bookRoom.map((item, i) => (
                         <TableRow key={item.id}>
                           <TableCell>{item.jenis_kamars.jenis_kamar}</TableCell>
-                          <TableCell>{item.jenis_kamars.kapasitas}</TableCell>
-                          <TableCell>{formatCurrency(item.jenis_kamars.tarif_normal)}</TableCell>
+                          <TableCell>{roomCounts[item.id_jenis_kamar]}</TableCell>
+                          <TableCell>{formatCurrency(item.hargaPerMalam)}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

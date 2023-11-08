@@ -220,6 +220,20 @@ const FasilitasPage = () => {
         Authorization: `Bearer ${authToken}`,
       },
     };
+
+    const isDuplicate = fasilitasData.some(
+      (fasilitas) => fasilitas.nama_fasilitas === currentFasilitasData.nama_fasilitas
+    );
+    if (isDuplicate) {
+      toast.error("Facility name must be unique", {
+        position: "top-right",
+        hideProgressBar: true,
+        theme: "colored",
+        autoClose: 1000,
+      });
+      onCreateConfModalOpenChange(true);
+      return;
+    }
     // console.log("BODYYY", body);
 
     axios

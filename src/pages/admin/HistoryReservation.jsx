@@ -1,4 +1,25 @@
-import { Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react";
+import {
+  Button,
+  Chip,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Pagination,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+  useDisclosure,
+} from "@nextui-org/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -20,7 +41,7 @@ const HistoryReservation = () => {
   const [bookRoom, setBookRoom] = useState([]);
   const [facilityBook, setFacilityBook] = useState([]);
 
-  const [currentHistoryrId, setCurrentHistoryId] = useState(null);
+  const [currentHistoryId, setCurrentHistoryId] = useState(null);
   const [currentHistoryData, setCurrentHistoryData] = useState({
     reservations: {
       id: "",
@@ -57,6 +78,12 @@ const HistoryReservation = () => {
     onClose: closeCreateModal,
   } = useDisclosure();
 
+  const openCreateModalWithId = (reservationId) => {
+    setCurrentHistoryId(reservationId);
+    console.log(reservationId);
+    openCreateModal();
+  };
+
   const columnsKamar = [
     {
       key: "jenis_kamar",
@@ -71,7 +98,7 @@ const HistoryReservation = () => {
       label: "TONIGHT'S RATE",
     },
   ];
-  
+
   const columnsFacilities = [
     {
       key: "nama_fasilitas",
@@ -116,9 +143,9 @@ const HistoryReservation = () => {
         setFacilityBook(facilityBookData);
 
         const flattenedBookRoom = [].concat(...bookRoomData);
-      const flattenedFacilityBook = [].concat(...facilityBookData);
-      setBookRoom(flattenedBookRoom);
-      setFacilityBook(flattenedFacilityBook);
+        const flattenedFacilityBook = [].concat(...facilityBookData);
+        setBookRoom(flattenedBookRoom);
+        setFacilityBook(flattenedFacilityBook);
       })
       .catch((error) => {
         console.error("Error fetching history data: ", error);
@@ -134,10 +161,7 @@ const HistoryReservation = () => {
     const idBooking = item.id_booking.toLowerCase();
     const searchLower = search.toLowerCase();
 
-    return (
-      status.includes(searchLower) ||
-      idBooking.includes(searchLower)
-    );
+    return status.includes(searchLower) || idBooking.includes(searchLower);
   });
 
   //Search Pagination
@@ -212,7 +236,7 @@ const HistoryReservation = () => {
                 (filteredHistoryData?.length || 0) <= rowsPerPage
                   ? 1
                   : Math.ceil((filteredHistoryData?.length || 0) / rowsPerPage)
-              }              
+              }
               onChange={(page) => setPage(page)}
             />
           </div>
@@ -232,188 +256,248 @@ const HistoryReservation = () => {
           {items?.map((item, i) => (
             <TableRow key={item.id}>
               <TableCell className="text-medium">{item.id_booking}</TableCell>
-              <TableCell className="text-medium">{formatDate(item.tgl_reservasi)}</TableCell>
+              <TableCell className="text-medium">
+                {formatDate(item.tgl_reservasi)}
+              </TableCell>
               <TableCell className="text-medium">
                 {formatDate(item.tgl_checkin)}
               </TableCell>
-              <TableCell className="text-medium">{formatDate(item.tgl_checkout)}</TableCell>
               <TableCell className="text-medium">
-              <Chip
-              color={
-                item.status === "Lunas"
-                  ? "success"
-                  : item.status === "Menunggu Pembayaran"
-                  ? "warning"
-                  : item.status === "Check-In"
-                  ? "primary"
-                  : "danger"
-              }
-              className="text-white"
+                {formatDate(item.tgl_checkout)}
+              </TableCell>
+              <TableCell className="text-medium">
+                <Chip
+                  color={
+                    item.status === "Paid"
+                      ? "success"
+                      : item.status === "Waiting for payment"
+                      ? "warning"
+                      : item.status === "Confirmed"
+                      ? "secondary"
+                      : item.status === "Check-In"
+                      ? "primary"
+                      : "danger"
+                  }
+                  className="text-white"
                 >
                   {item.status}
                 </Chip>
-                
-                </TableCell>
+              </TableCell>
               <TableCell className="w-[50px]">
-                  <div className="relative flex items-center">
-                    <Dropdown>
-                      <DropdownTrigger>
-                        <Button isIconOnly size="sm" variant="light">
-                          <BsThreeDotsVertical className="text-default-500" />
-                        </Button>
-                      </DropdownTrigger>
-                      <DropdownMenu>
-                        <DropdownItem
-                          color="primary"
-                          startContent={<MdLibraryBooks />}
-                          onClick={openCreateModal}>
-                          See Details
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
-                  </div>
+                <div className="relative flex items-center">
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button isIconOnly size="sm" variant="light">
+                        <BsThreeDotsVertical className="text-default-500" />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                      <DropdownItem
+                        color="primary"
+                        startContent={<MdLibraryBooks />}
+                        onClick={() => openCreateModalWithId(item.id)}
+                      >
+                        See Details
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
       <Modal
-          isOpen={createModalOpen}
-          onOpenChange={onCreateModalOpenChange}
-          scrollBehavior="inside"
-          size="2xl"
-        >
-          <ModalContent>
-            <ModalHeader className="flex flex-col gap-1">
-              Detail Reservation
-            </ModalHeader>
-            {items?.map((item, i) => (
-            <ModalBody key={item.id}>
-              <><div className="flex justify-between">
-                    <h2 className="h2 text-[20px] font-bold">Booking ID #{item.id_booking}</h2>
+        isOpen={createModalOpen}
+        onOpenChange={onCreateModalOpenChange}
+        scrollBehavior="inside"
+        size="2xl"
+      >
+        <ModalContent>
+          <ModalHeader className="flex flex-col gap-1">
+            Detail Reservation
+          </ModalHeader>
+          {items
+            ?.filter((item) => item.id === currentHistoryId)
+            .map((item, i) => (
+              <ModalBody key={item.id}>
+                <>
+                  <div className="flex justify-between">
+                    <h2 className="h2 text-[20px] font-bold">
+                      Booking ID #{item.id_booking}
+                    </h2>
                     <Chip
-                        color={item.status === "Lunas"
-                            ? "success"
-                            : item.status === "Menunggu Pembayaran"
-                                ? "warning"
-                                : item.status === "Check-In"
-                                    ? "primary"
-                                    : "danger"}
-                        className="text-white"
+                      color={
+                        item.status === "Paid"
+                          ? "success"
+                          : item.status === "Waiting for payment"
+                          ? "warning"
+                          : item.status === "Confirmed"
+                          ? "secondary"
+                          : item.status === "Check-In"
+                          ? "primary"
+                          : "danger"
+                      }
+                      className="text-white"
                     >
-                        {item.status}
+                      {item.status}
                     </Chip>
-                </div><div className="border-t-2 border-gray-300 -mt-4"></div><div className="flex justify-between">
-                        <div>
-                            <p className="font-semibold">Name</p>
-                        </div>
-                        <div>
-                            <p className="">{historyData.nama}</p>
-                        </div>
-                    </div><div className="flex justify-between">
-                        <div>
-                            <p className="font-semibold">Email</p>
-                        </div>
-                        <div>
-                            <p className="">{historyData.email}</p>
-                        </div>
-                    </div><div className="flex justify-between">
-                        <div>
-                            <p className="font-semibold">Phone Number</p>
-                        </div>
-                        <div>
-                            <p className="">{historyData.no_telepon}</p>
-                        </div>
-                    </div><div className="mt-4">
-                        <h2 className="h2 text-[20px] font-semibold">Reservation</h2>
-                    </div><div className="border-t-2 border-gray-300 -mt-4" /><div className="flex justify-between">
-                        <div>
-                            <p className="font-semibold">Check-In</p>
-                        </div>
-                        <div>
-                            <p className="">{formatDate(item.tgl_checkin)}</p>
-                        </div>
-                    </div><div className="flex justify-between">
-                        <div>
-                            <p className="font-semibold">Check-Out</p>
-                        </div>
-                        <div>
-                            <p className="">{formatDate(item.tgl_checkout)}</p>
-                        </div>
-                    </div><div className="flex justify-between">
-                        <div>
-                            <p className="font-semibold">Adults</p>
-                        </div>
-                        <div>
-                            <p className="">{item.jumlah_dewasa}</p>
-                        </div>
-                    </div><div className="flex justify-between">
-                        <div>
-                            <p className="font-semibold">Kids</p>
-                        </div>
-                        <div>
-                            <p className="">{item.jumlah_anak}</p>
-                        </div>
-                    </div><div className="flex justify-between">
-                        <div>
-                            <p className="font-semibold">Down Payment</p>
-                        </div>
-                        <div>
-                            <p className="">{formatCurrency(item.uang_jaminan)}</p>
-                        </div>
-                    </div><div className="flex justify-between">
-                        <div>
-                            <p className="font-semibold">Payment Date</p>
-                        </div>
-                        <div>
-                            <p className="">{formatDate(item.tgl_pembayaran)}</p>
-                        </div>
-                    </div></>
-               
-              {bookRoom.length !== 0 ? (
-              <><div className="mt-4">
-                  <h2 className="h2 text-[20px] font-semibold">Room</h2>
-                </div><div className="border-t-2 border-gray-300 -mt-4" /><Table>
-                    <TableHeader columns={columnsKamar}>
-                      {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
-                    </TableHeader>
-                    <TableBody>
-                      {bookRoom.map((item, i) => (
-                        <TableRow key={item.id}>
-                          <TableCell>{item.jenis_kamars.jenis_kamar}</TableCell>
-                          <TableCell>{item.jenis_kamars.kapasitas}</TableCell>
-                          <TableCell>{formatCurrency(item.jenis_kamars.tarif_normal)}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table></>
-              ): ""}
-              {facilityBook.length !== 0 ? (
-              <><div className="mt-4">
-                  <h2 className="h2 text-[20px] font-semibold">Paid Facilities</h2>
-                </div><div className="border-t-2 border-gray-300 -mt-4" /><Table>
-                    <TableHeader columns={columnsFacilities}>
-                      {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
-                    </TableHeader>
-                    <TableBody>
-                      {facilityBook.map((item, i) => (
-                        <TableRow key={item.id}>
-                          <TableCell>{item.fasilitas_tambahans.nama_fasilitas}</TableCell>
-                          <TableCell>{item.jumlah}</TableCell>
-                          <TableCell>{formatDate(item.tgl_pemakaian)}</TableCell>
-                          <TableCell>{formatCurrency(item.subtotal)}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table></>
+                  </div>
+                  <div className="border-t-2 border-gray-300 -mt-4"></div>
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="font-semibold">Name</p>
+                    </div>
+                    <div>
+                      <p className="">{historyData.nama}</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="font-semibold">Email</p>
+                    </div>
+                    <div>
+                      <p className="">{historyData.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="font-semibold">Phone Number</p>
+                    </div>
+                    <div>
+                      <p className="">{historyData.no_telepon}</p>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <h2 className="h2 text-[20px] font-semibold">
+                      Reservation
+                    </h2>
+                  </div>
+                  <div className="border-t-2 border-gray-300 -mt-4" />
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="font-semibold">Check-In</p>
+                    </div>
+                    <div>
+                      <p className="">{formatDate(item.tgl_checkin)}</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="font-semibold">Check-Out</p>
+                    </div>
+                    <div>
+                      <p className="">{formatDate(item.tgl_checkout)}</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="font-semibold">Adults</p>
+                    </div>
+                    <div>
+                      <p className="">{item.jumlah_dewasa}</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="font-semibold">Kids</p>
+                    </div>
+                    <div>
+                      <p className="">{item.jumlah_anak}</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="font-semibold">Down Payment</p>
+                    </div>
+                    <div>
+                      <p className="">{formatCurrency(item.uang_jaminan)}</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="font-semibold">Payment Date</p>
+                    </div>
+                    <div>
+                      <p className="">{formatDate(item.tgl_pembayaran)}</p>
+                    </div>
+                  </div>
+                </>
 
-              ): ""}
-            </ModalBody>
+                {bookRoom.length !== 0 ? (
+                  <>
+                    <div className="mt-4">
+                      <h2 className="h2 text-[20px] font-semibold">Room</h2>
+                    </div>
+                    <div className="border-t-2 border-gray-300 -mt-4" />
+                    <Table>
+                      <TableHeader columns={columnsKamar}>
+                        {(column) => (
+                          <TableColumn key={column.key}>
+                            {column.label}
+                          </TableColumn>
+                        )}
+                      </TableHeader>
+                      <TableBody>
+                        {bookRoom.map((item, i) => (
+                          <TableRow key={item.id}>
+                            <TableCell>
+                              {item.jenis_kamars.jenis_kamar}
+                            </TableCell>
+                            <TableCell>{item.jenis_kamars.kapasitas}</TableCell>
+                            <TableCell>
+                              {formatCurrency(item.jenis_kamars.tarif_normal)}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </>
+                ) : (
+                  ""
+                )}
+                {facilityBook.length !== 0 ? (
+                  <>
+                    <div className="mt-4">
+                      <h2 className="h2 text-[20px] font-semibold">
+                        Paid Facilities
+                      </h2>
+                    </div>
+                    <div className="border-t-2 border-gray-300 -mt-4" />
+                    <Table>
+                      <TableHeader columns={columnsFacilities}>
+                        {(column) => (
+                          <TableColumn key={column.key}>
+                            {column.label}
+                          </TableColumn>
+                        )}
+                      </TableHeader>
+                      <TableBody>
+                        {facilityBook.map((item, i) => (
+                          <TableRow key={item.id}>
+                            <TableCell>
+                              {item.fasilitas_tambahans.nama_fasilitas}
+                            </TableCell>
+                            <TableCell>{item.jumlah}</TableCell>
+                            <TableCell>
+                              {formatDate(item.tgl_pemakaian)}
+                            </TableCell>
+                            <TableCell>
+                              {formatCurrency(item.subtotal)}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </>
+                ) : (
+                  ""
+                )}
+              </ModalBody>
             ))}
-            <ModalFooter>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+          <ModalFooter></ModalFooter>
+        </ModalContent>
+      </Modal>
     </section>
   );
 };

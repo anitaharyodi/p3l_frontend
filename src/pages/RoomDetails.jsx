@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { FaCheck } from "react-icons/fa";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { RoomContext } from "../context/RoomContext";
 import CheckIn from "../components/CheckIn";
 import CheckOut from "../components/CheckOut";
@@ -12,6 +12,7 @@ import { BiSolidBed } from "react-icons/bi";
 
 const RoomDetails = () => {
   const location = useLocation();
+  const navigate = useNavigate()
   const roomImage = location.state ? location.state.roomImage : null;
   const jenis_kamar = location.state ? location.state.jenis_kamar : null;
   const tarif_normal = location.state ? location.state.tarif_normal : null;
@@ -136,7 +137,7 @@ const RoomDetails = () => {
                   <KidsDropdown />
                 </div>
               </div>
-              <button className="btn btn-lg btn-primary w-full">
+              <button className="btn btn-lg btn-primary w-full" onClick={() => navigate('/searchRoom')}>
                 book now for {formatCurrencyIDR(tarif_normal)}
               </button>
             </div>

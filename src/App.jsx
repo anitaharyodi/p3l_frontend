@@ -18,6 +18,8 @@ import FasilitasPage from "./pages/admin/FasilitasPage";
 import TarifPage from "./pages/admin/TarifPage";
 import CustomerPage from "./pages/admin/CustomerPage";
 import HistoryReservation from "./pages/admin/HistoryReservation";
+import SearchBookRoom from "./pages/SearchBookRoom";
+import Booking from "./pages/Booking";
 
 const App = () => {
   const { setIsLogin, setIsLoginPegawai } = useContext(RoomContext);
@@ -51,6 +53,8 @@ const App = () => {
                   <Route path="/forgotPassword" element={<ForgotPassword />} />
                   <Route path="/profile" element={<ProfileCustomer />} />
                   <Route path="/myBooking" element={<MyBooking />} />
+                  <Route path="/searchRoom" element={<SearchBookRoom />} />
+                  <Route path="/book/:id" element={<Booking />} />
                 </Routes>
                 <Footer />
               </>
