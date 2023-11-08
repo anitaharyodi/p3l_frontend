@@ -1,10 +1,11 @@
 import { Button, Chip, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, getKeyValue, useDisclosure } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { CgEnter } from "react-icons/cg";
-import { BiLogOut } from "react-icons/bi";
+import { BiLogOut, BiSolidDownload } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const CardBooking = ({
   id,
@@ -23,6 +24,12 @@ const CardBooking = ({
 }) => {
   const navigate = useNavigate()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const {
+    isOpen: CancelModalOpen,
+    onOpen: openCancelModal,
+    onOpenChange: onCancelModalOpenChange,
+    onClose: closeCancelModal,
+  } = useDisclosure();
   const authToken = localStorage.getItem("token");
   const [bookRoom, setBookRoom] = useState([]);
   const [facilityBook, setFacilityBook] = useState([]);
@@ -102,9 +109,71 @@ const CardBooking = ({
     },
   ];
 
+  const handlePembatalan = () => {
+      const axiosConfig = {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      };
+
+      const apiURL = `http://localhost:8000/api/reservasi/pemesananBatal/${id}`;
+      axios
+        .post(apiURL, null, axiosConfig)
+        .then((response) => {
+          console.log(JSON.stringify(response, null, 2))
+          if(response.status === 200) {
+            toast.success('Your booking has been cancelled!', {
+              position: 'top-right',
+              hideProgressBar: true,
+              theme: 'colored',
+              autoClose: 1000,
+            });
+            onCancelModalOpenChange(false)
+            onOpenChange(false)
+            window.location.reload();
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+  }
+
+  const getPDF = () => {
+    const axiosConfig = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+      responseType: 'blob', // Set the response type to 'blob'
+    };
+    const apiURL = `http://localhost:8000/api/generate-pdf/${id}`;
+    
+    axios
+      .get(apiURL, axiosConfig)
+      .then((response) => {
+        // Create a Blob object and generate a URL for the PDF
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+  
+        // Create a link element for download and trigger the click event
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `reservation_${idBooking}.pdf`;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+  
+        // Clean up
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  
+
 
   return (
-    <div className="bg-gray-100 p-8 m-2 rounded-2xl">
+    <div className="bg-gray-100 p-6 m-2 rounded-2xl">
       <div className="flex justify-between">
         <h2 className="text-xl font-semibold text-[#1E2131]">{idBooking}</h2>
         <Chip
@@ -147,7 +216,7 @@ const CardBooking = ({
           <p className="font-medium text-[#1E2131]">{tglCheckout}</p>
         </div>
       </div>
-      <div className="mt-6 text-right">
+      <div className="mt-4 text-right">
         <h2 className="font-medium text-[#1E2131]">
           Total Price :{" "}
           <span className="text-xl font-semibold font-tertiary tracking-[2px] uppercase ml-2">
@@ -156,8 +225,8 @@ const CardBooking = ({
         </h2>
       </div>
       {/* <div className="border-t-2 border-gray-300 mt-4"></div> */}
-      <div className="flex justify-between mt-4">
-        {status == 'Waiting for payment' ? (
+      <div className="flex justify-between mt-2">
+        {tglPembayaran === '1 January 1970' ? (
           <p className="text-gray-500 mt-3">Payment Date : -</p>
           ) : (
             <p className="text-gray-500 mt-3">Payment Date : {tglPembayaran}</p>
@@ -191,8 +260,17 @@ const CardBooking = ({
           size="2xl"
         >
           <ModalContent>
-            <ModalHeader className="flex flex-col gap-1">
-              Detail Reservation
+            <ModalHeader className="flex justify-between">
+              <p>Detail Reservation</p>
+              {status == "Confirmed" || status === "Check In" ? (
+              <div>
+              <button className="text-[14px] bg-[#1E2131] text-white px-2 py-1 rounded-md mr-6 flex items-center" onClick={() => getPDF()}>
+                <BiSolidDownload className="mr-2"/>
+                Reservation Receipt
+                </button>
+              </div>
+
+              ): ""}
             </ModalHeader>
             <ModalBody>
               <div className="flex justify-between">
@@ -292,7 +370,7 @@ const CardBooking = ({
                   <p className="font-semibold">Payment Date</p>
                 </div>
                 <div>
-                {status == "Waiting for payment" ? (
+                {tglPembayaran === '1 January 1970' ? (
                     <p className="">-</p>
                     ) : (
                       <p className="">{tglPembayaran}</p>
@@ -338,10 +416,47 @@ const CardBooking = ({
 
               ): ""}
             </ModalBody>
-            <ModalFooter>
+            <ModalFooter className="flex justify-center items-center">
+              {status == "Waiting for payment" || status === "Confirmed" ? (
+              <button className="text-danger-500 font-medium border-1 border-danger-500 p-2 rounded-md" onClick={() => openCancelModal()}>
+                Cancelled this booking
+              </button>
+
+              ) : ""}
             </ModalFooter>
           </ModalContent>
         </Modal>
+
+        <Modal isOpen={CancelModalOpen} onOpenChange={onCancelModalOpenChange}>
+              <ModalContent>
+                <ModalHeader>
+                  <div className="flex flex-col items-center w-full">
+                    <p className="text-center mt-1 uppercase text-[#1E2131] font-bold tracking-[1px]">
+                      Confirmation
+                    </p>
+                  </div>
+                </ModalHeader>
+                <ModalBody>
+                  <p className="font-semibold text-center">Are you sure want to cancel this booking?</p>
+                </ModalBody>
+                <ModalFooter>
+                  <button
+                    className="w-[200px] h-[40px] rounded-md text-black"
+                    onClick={() => {
+                      closeCancelModal();
+                    }}
+                  >
+                    No
+                  </button>
+                  <button
+                    className="bg-[#1E2131] text-white w-[200px] h-[40px] rounded-md"
+                    onClick={() => handlePembatalan()}
+                  >
+                    Yes
+                  </button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
       </div>
     </div>
   );

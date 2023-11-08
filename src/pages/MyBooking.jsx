@@ -4,11 +4,15 @@ import assets from "../assets";
 import CardBooking from "../components/CardBooking";
 import axios from "axios";
 import { useParams } from "react-router";
+import { Input } from "@nextui-org/react";
+import { CiSearch } from "react-icons/ci";
 
 const MyBooking = () => {
   const authToken = localStorage.getItem("token");
   const [profileData, setProfileData] = useState();
   const [bookingData, setBookingData] = useState([]);
+  const [search, setSearch] = useState("");
+  const [originalBookingData, setOriginalBookingData] = useState([]);
 
   const formatDate = (dateString) => {
     const options = { day: "numeric", month: "long", year: "numeric" };
@@ -30,19 +34,35 @@ const MyBooking = () => {
       .get(apiURL, axiosConfig)
       .then((response) => {
         const { nama, email, no_telepon } = response.data.mess.customers;
-        console.log(JSON.stringify(response.data.mess.customers, null, 2));
         setProfileData({
           name: nama,
           email: email,
           noTelepon: no_telepon,
         });
-        console.log(profileData);
         setBookingData(response.data.mess.customers.reservations.reverse());
+        setOriginalBookingData(response.data.mess.customers.reservations);
       })
       .catch((error) => {
         console.error("Error fetching data from the API: " + error);
       });
   }, [authToken]);
+
+  const searchInText = (searchQuery) => {
+    const regex = new RegExp(searchQuery, "i");
+
+    const filteredBookings = originalBookingData.filter((booking) => {
+      return (
+        regex.test(booking.status) || regex.test(booking.id_booking)
+      );
+    });
+
+    setBookingData(filteredBookings);
+  };
+
+  const onClear = React.useCallback(() => {
+    setSearch("");
+    setBookingData(originalBookingData);
+  }, [originalBookingData]);
 
   return (
     <section>
@@ -57,6 +77,20 @@ const MyBooking = () => {
           <h1 className="text-6xl text-white z-20 font-primary text-center">
             My Bookings
           </h1>
+        </div>
+        <div className="-mt-[125px] flex justify-center items-center">
+          <Input
+            isClearable
+            className="w-full sm:max-w-[30%] text-medium"
+            placeholder="Search"
+            onClear={() => onClear()}
+            startContent={<CiSearch />}
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              searchInText(e.target.value);
+            }}
+          />
         </div>
       </div>
       <div className="container mx-auto">
