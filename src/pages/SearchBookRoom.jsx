@@ -21,16 +21,12 @@ import AdultsDropdown from "../components/AdultsDropdown";
 import KidsDropdown from "../components/KidsDropdown";
 
 const SearchBookRoom = () => {
-  const { handleClick, tglCheckin, tglCheckOut} = useContext(RoomContext)
-  const [jenisKamarBySeason, setJenisKamarBySeason] = useState([])
-  const [ketersediaanKamar, setKetersediaanKamar] = useState([])
+  const { handleClick, tglCheckin, tglCheckOut } = useContext(RoomContext);
+  const [jenisKamarBySeason, setJenisKamarBySeason] = useState([]);
+  const [ketersediaanKamar, setKetersediaanKamar] = useState([]);
 
-  const formattedDateCheckin = moment(tglCheckin).format(
-    "YYYY-MM-DD"
-  );
-  const formattedDateCheckout = moment(tglCheckOut).format(
-    "YYYY-MM-DD"
-  );
+  const formattedDateCheckin = moment(tglCheckin).format("YYYY-MM-DD");
+  const formattedDateCheckout = moment(tglCheckOut).format("YYYY-MM-DD");
 
   const isFormEmpty = !tglCheckin || !tglCheckOut;
 
@@ -41,7 +37,10 @@ const SearchBookRoom = () => {
       .then((response) => {
         // console.log(response)
         setJenisKamarBySeason(response.data.data);
-        console.log('MASUK SEARCH', JSON.stringify(response.data.data, null, 2))
+        console.log(
+          "MASUK SEARCH",
+          JSON.stringify(response.data.data, null, 2)
+        );
       })
       .catch((error) => {
         console.error("Error fetching data from the API: " + error);
@@ -55,7 +54,10 @@ const SearchBookRoom = () => {
       .then((response) => {
         // console.log(response)
         setKetersediaanKamar(response.data.data);
-        console.log('MASUK SEARCH', JSON.stringify(response.data.data, null, 2))
+        console.log(
+          "MASUK SEARCH",
+          JSON.stringify(response.data.data, null, 2)
+        );
       })
       .catch((error) => {
         console.error("Error fetching data from the API: " + error);
@@ -78,37 +80,44 @@ const SearchBookRoom = () => {
         </div>
       </div>
       <div className="container mx-auto max-w-full">
-          <div className="mt-[100px] p-4 lg:shadow-xl lg:absolute lg:left-60 lg:right-60 lg:p-0 lg:z-30 lg:top-60">
+        <div className="mt-[100px] p-4 lg:shadow-xl lg:absolute lg:left-60 lg:right-60 lg:p-0 lg:z-30 lg:top-60">
           <form className="h-[300px] w-full lg:h-[60px]">
-      <div className="flex flex-col w-full h-full lg:flex-row">
-        <div className="flex-1 border-r">
-          <CheckIn />
+            <div className="flex flex-col w-full h-full lg:flex-row">
+              <div className="flex-1 border-r">
+                <CheckIn />
+              </div>
+              <div className="flex-1 border-r">
+                <CheckOut />
+              </div>
+              <div className="flex-1 border-r">
+                <AdultsDropdown />
+              </div>
+              <div className="flex-1 border-r">
+                <KidsDropdown />
+              </div>
+            </div>
+          </form>
         </div>
-        <div className="flex-1 border-r">
-          <CheckOut/>
-        </div>
-        <div className="flex-1 border-r">
-          <AdultsDropdown />
-        </div>
-        <div className="flex-1 border-r">
-          <KidsDropdown />
-        </div>
-      </div>
-    </form>
-        </div>
-      <div className="flex flex-col lg:flex-row h-full mt-8">
+        <div className="flex flex-col lg:flex-row h-full mt-8">
           <div className="w-full h-full lg:w-[70%] px-6">
-        <div className="mb-6">
-          {jenisKamarBySeason.map((item, index) => (
-            <CardFindRoom key={item.id} jenisKamarBySeason={item} imgIndex={index} ketersediaanKamar={ketersediaanKamar?.find(kk => kk.id_jenis_kamar == item.id)?.totalKamar}/>
-
-          ))}
-        </div>
+            <div className="mb-6">
+              {jenisKamarBySeason.map((item, index) => (
+                <CardFindRoom
+                  key={item.id}
+                  jenisKamarBySeason={item}
+                  imgIndex={index}
+                  ketersediaanKamar={
+                    ketersediaanKamar?.find(
+                      (kk) => kk.id_jenis_kamar == item.id
+                    )?.totalKamar
+                  }
+                />
+              ))}
+            </div>
           </div>
           <div className="w-full h-full lg:w-[30%] mr-6 mb-8 sticky top-20">
             <BookingList />
           </div>
-
         </div>
       </div>
     </section>

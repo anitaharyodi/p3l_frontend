@@ -143,18 +143,16 @@ const CardBooking = ({
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
-      responseType: 'blob', // Set the response type to 'blob'
+      responseType: 'blob',
     };
     const apiURL = `http://localhost:8000/api/generate-pdf/${id}`;
     
     axios
       .get(apiURL, axiosConfig)
       .then((response) => {
-        // Create a Blob object and generate a URL for the PDF
         const blob = new Blob([response.data], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
   
-        // Create a link element for download and trigger the click event
         const a = document.createElement('a');
         a.href = url;
         a.download = `reservation_${idBooking}.pdf`;
@@ -162,7 +160,6 @@ const CardBooking = ({
         document.body.appendChild(a);
         a.click();
   
-        // Clean up
         window.URL.revokeObjectURL(url);
       })
       .catch((error) => {
@@ -418,7 +415,7 @@ const CardBooking = ({
             </ModalBody>
             <ModalFooter className="flex justify-center items-center">
               {status == "Waiting for payment" || status === "Confirmed" ? (
-              <button className="text-danger-500 font-medium border-1 border-danger-500 p-2 rounded-md" onClick={() => openCancelModal()}>
+              <button className="text-danger-500 font-medium" onClick={() => openCancelModal()}>
                 Cancelled this booking
               </button>
 

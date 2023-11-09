@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MdLibraryBooks } from "react-icons/md";
-import assets from "../assets";
 import { useNavigate } from "react-router";
-import { RoomContext } from "../context/RoomContext";
+import { RoomContext } from "../../context/RoomContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import moment from "moment";
@@ -14,16 +13,17 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
+import assets from "../../assets";
 
 const roomImages = [assets.ROOM4, assets.ROOM2, assets.ROOM3, assets.ROOM1];
 
-const BookingList = () => {
-  const { bookingList, tglCheckin, tglCheckOut, total, adults, kids } =
+const BookingListGroup = () => {
+  const { bookingListGroup, tglCheckinGroup, tglCheckOutGroup, adultsGroup, kidsGroup } =
     useContext(RoomContext);
-  const authToken = localStorage.getItem("token");
+  const authToken = localStorage.getItem("tokenPegawai");
   const navigate = useNavigate();
-  const checkInDate = new Date(tglCheckin);
-  const checkOutDate = new Date(tglCheckOut);
+  const checkInDate = new Date(tglCheckinGroup);
+  const checkOutDate = new Date(tglCheckOutGroup);
   console.log("LIAT", checkOutDate);
   const timeDifference = checkOutDate - checkInDate;
 
@@ -33,20 +33,20 @@ const BookingList = () => {
     const nights = timeDifference / (1000 * 60 * 60 * 24);
     const roundedNights = Math.round(nights);
     setNumberOfNights(roundedNights);
-  }, [tglCheckin, tglCheckOut]);
+  }, [tglCheckinGroup, tglCheckOutGroup]);
 
-  console.log("MALAM", JSON.stringify(bookingList, null, 2));
+  console.log("MALAM", JSON.stringify(bookingListGroup, null, 2));
 
   const formatCurrency = (number) => {
     return `Rp ${new Intl.NumberFormat("id-ID").format(number)}`;
   };
 
-  const totalPrice = bookingList.reduce((total, booking) => {
+  const totalPrice = bookingListGroup.reduce((total, booking) => {
     return total + booking.quantity * numberOfNights * booking.hargaPerMalam;
   }, 0);
 
   const formattedTotalPrice = formatCurrency(totalPrice);
-  const transformedBookingList = bookingList.map((booking) => ({
+  const transformedBookingList = bookingListGroup.map((booking) => ({
     id_jenis_kamar: booking.id,
     jumlah: booking.quantity,
     hargaPerMalam: booking.hargaPerMalam,
@@ -54,8 +54,8 @@ const BookingList = () => {
 
   console.log(JSON.stringify(transformedBookingList, null, 2));
 
-  const formattedDateCheckin = moment(tglCheckin).format("YYYY-MM-DD");
-  const formattedDateCheckout = moment(tglCheckOut).format("YYYY-MM-DD");
+  const formattedDateCheckin = moment(tglCheckinGroup).format("YYYY-MM-DD");
+  const formattedDateCheckout = moment(tglCheckOutGroup).format("YYYY-MM-DD");
 
   const {
     isOpen: isModalOpen,
@@ -68,8 +68,8 @@ const BookingList = () => {
     const body = {
       tgl_checkin: formattedDateCheckin,
       tgl_checkout: formattedDateCheckout,
-      jumlah_dewasa: parseInt(adults),
-      jumlah_anak: parseInt(kids),
+      jumlah_dewasa: parseInt(adultsGroup),
+      jumlah_anak: parseInt(kidsGroup),
       total_harga: totalPrice,
       jenis_kamar: transformedBookingList,
     };
@@ -84,7 +84,7 @@ const BookingList = () => {
       .then((response) => {
         console.log("Booking data successfully:", response.data);
         const reservationId = response.data.data.reservasi.id;
-        navigate(`/book/${reservationId}`, { state: { bookingList } });
+        navigate(`/book/${reservationId}`, { state: { bookingListGroup } });
       })
       .catch((error) => {
         toast.error(error.response.data.message, {
@@ -102,25 +102,25 @@ const BookingList = () => {
 
   return (
     <div className="bg-white min-h-[450px] shadow-md rounded-md flex flex-col justify-between">
-      <div className="bg-[#1E2131] h-[70px] rounded-t-md">
-        <p className="text-white p-4 text-[25px] font-semibold font-tertiary tracking-[1px] flex items-center">
+      <div className="bg-[#1E2131] h-[60px] rounded-t-md">
+        <p className="text-white p-4 text-[20px] font-semibold font-tertiary tracking-[1px] flex items-center">
           <MdLibraryBooks className="text-md mr-2" />
           Booking List
         </p>
       </div>
-      <div className={`${bookingList.length === 1 ? "-mt-[130px]" : ""}`}>
-        {bookingList.map((booking, index) => (
+      <div className={`${bookingListGroup.length === 1 ? "-mt-[130px]" : ""}`}>
+        {bookingListGroup.map((booking, index) => (
           <div key={booking.jenis_kamar}>
             <div className="pt-6 px-6 flex items-center">
               <img
                 src={roomImages[booking.imgIndex]}
-                width={100}
+                width={80}
                 height={100}
                 className="rounded-md"
                 alt="Room"
               />
               <div className="ml-4">
-                <p className="font-bold font-tertiary tracking-[1px]">
+                <p className="font-bold font-tertiary tracking-[1px] text-[14px]">
                   ({booking.quantity}x) {booking.jenis_kamar}
                 </p>
                 <p className="text-gray-600 text-[12px]">
@@ -128,7 +128,7 @@ const BookingList = () => {
                 </p>
               </div>
               <div className="ml-auto">
-                <p className="font-tertiary tracking-[1px] font-semibold text-[17px] text-[#526166]">
+                <p className="font-tertiary tracking-[1px] font-semibold text-[15px] text-[#526166]">
                   {formatCurrency(
                     booking.quantity * numberOfNights * booking.hargaPerMalam
                   )}
@@ -143,17 +143,17 @@ const BookingList = () => {
         {totalPrice !== 0 && (
           <div className="border-1 p-3 mb-4 rounded-md">
             <div className="flex justify-between">
-              <p className="font-tertiary tracking-[1px] text-[20px] font-semibold">
+              <p className="font-tertiary tracking-[1px] text-[18px] font-semibold">
                 Total Price :{" "}
               </p>
-              <p className="font-tertiary tracking-[1px] font-semibold text-[20px] text-accent">
+              <p className="font-tertiary tracking-[1px] font-semibold text-[18px] text-accent">
                 {formattedTotalPrice}
               </p>
             </div>
           </div>
         )}
         <button
-          className={`bg-[#1E2131] text-white w-full p-2 font-semibold text-[16px] h-10 rounded-md ${
+          className={`bg-[#1E2131] text-white w-full p-2 font-semibold text-[14px] h-10 rounded-md ${
             !totalPrice ? "bg-gray-200 cursor-not-allowed" : ""
           }`}
           onClick={() => openModal()}
@@ -172,7 +172,7 @@ const BookingList = () => {
             </div>
           </ModalHeader>
           <ModalBody>
-            <p className="font-semibold">Are you sure you want to book?</p>
+            <p className="font-semibold">Are you sure want to book?</p>
             <p className="font-medium">
               Please ensure the above details are correct before proceeding to
               the booking page. After proceeding to the booking page, we will
@@ -201,4 +201,4 @@ const BookingList = () => {
   );
 };
 
-export default BookingList;
+export default BookingListGroup;

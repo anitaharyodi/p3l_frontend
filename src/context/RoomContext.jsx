@@ -20,12 +20,28 @@ const RoomProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [isLoginPegawai, setIsLoginPegawai] = useState(false);
   const [bookingList, setBookingList] = useState([]);
+  const [bookingListGroup, setBookingListGroup] = useState([]);
+
+  // For Group Reservation
+  const [tglCheckinGroup, setTglCheckinGroup] = useState(new Date().toISOString().split('T')[0]);
+  const todayGroup = new Date();
+  const tomorrowGroup = new Date(today);
+  tomorrowGroup.setDate(todayGroup.getDate() + 1);
+  const tomorrowDate = tomorrowGroup.toISOString().split('T')[0];
+  const [tglCheckOutGroup, setTglCheckOutGroup] = useState(tomorrowDate);
+  const [adultsGroup, setAdultsGroup] = useState("1 Adults");
+  const [kidsGroup, setKidsGroup] = useState("0 Kids");
 
   useEffect(() => {
     setTotal((Number(adults[0]) + Number(kids[0])) / 2);
   });
 
   const handleClick = (e) => {
+    e.preventDefault();
+    console.log(total);
+  };
+
+  const handleClickGroup = (e) => {
     e.preventDefault();
     console.log(total);
   };
@@ -52,19 +68,51 @@ const RoomProvider = ({ children }) => {
     setBookingList([]);
   };
 
+  //For reservation Group
+  const addToBookingListGroup = (room) => {
+    const index = bookingListGroup.findIndex((item) => item.jenis_kamar === room.jenis_kamar);
+
+    if (index !== -1) {
+      const updatedBookingList = [...bookingListGroup];
+      updatedBookingList[index].quantity = room.quantity;
+      setBookingListGroup(updatedBookingList);
+    } else {
+      setBookingListGroup([...bookingListGroup, room]);
+    }
+  };
+
+  const removeFromBookingListGroup = (roomId) => {
+    const updatedBookingList = bookingListGroup.filter((item) => item.id !== roomId);
+    
+    setBookingListGroup(updatedBookingList);
+  };
+
+  const clearBookingListGroup = () => {
+    setBookingListGroup([]);
+  };
+
   return (
     <RoomContext.Provider
       value={{
         rooms,
         setTglCheckin,
+        setTglCheckinGroup,
         tglCheckin,
+        tglCheckinGroup,
         setTglCheckOut,
+        setTglCheckOutGroup,
         tglCheckOut,
+        tglCheckOutGroup,
         adults,
+        adultsGroup,
         setAdults,
+        setAdultsGroup,
         kids,
+        kidsGroup,
         setKids,
+        setKidsGroup,
         handleClick,
+        handleClickGroup,
         loading,
         setLoading,
         isLogin,
@@ -72,9 +120,13 @@ const RoomProvider = ({ children }) => {
         isLoginPegawai,
         setIsLoginPegawai,
         bookingList,
+        bookingListGroup,
         addToBookingList,
+        addToBookingListGroup,
         removeFromBookingList,
-        clearBookingList
+        removeFromBookingListGroup,
+        clearBookingList,
+        clearBookingListGroup
       }}
     >
       {children}

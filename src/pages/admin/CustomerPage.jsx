@@ -36,7 +36,7 @@ import { MdLibraryBooks, MdMeetingRoom } from "react-icons/md";
 import { toast } from "react-toastify";
 import { FaMoneyBills } from "react-icons/fa6";
 import { BiSolidUserDetail } from "react-icons/bi";
-import { AiFillEye } from "react-icons/ai";
+import { AiFillEye, AiOutlinePlus } from "react-icons/ai";
 import { useNavigate } from "react-router";
 
 const CustomerPage = () => {
@@ -319,6 +319,15 @@ const CustomerPage = () => {
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu>
+                      <DropdownItem
+                        color="warning"
+                        startContent={<AiOutlinePlus />}
+                        onClick={() => {
+                          navigate(`/home/reservation?id=${item.id}`);
+                        }}
+                      >
+                        Add Reservation
+                      </DropdownItem>
                       <DropdownItem
                         color="primary"
                         startContent={<MdLibraryBooks />}

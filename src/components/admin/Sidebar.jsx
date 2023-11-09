@@ -7,6 +7,7 @@ import { MdMeetingRoom } from "react-icons/md";
 import { BsFillTicketPerforatedFill, BsFillPersonFill, BsGraphUp } from "react-icons/bs";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import { FaMoneyBills } from "react-icons/fa6";
+import {PiBookOpenTextFill} from "react-icons/pi"
 import { RoomContext } from "../../context/RoomContext";
 import axios from "axios";
 
