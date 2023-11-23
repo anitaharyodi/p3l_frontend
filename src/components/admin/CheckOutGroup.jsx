@@ -24,9 +24,7 @@ const CheckOutGroup = () => {
           type='date'
           className="w-full h-full cursor-pointer text-left focus:outline-none"
           value={tglCheckOutGroup}
-          placeholderText="Check Out"
           onChange={(date) => setTglCheckOutGroup(date.target.value)}
-          popperPlacement="bottom-end"
           min={new Date()}
         />
       </div>

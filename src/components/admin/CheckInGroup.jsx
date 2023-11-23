@@ -19,7 +19,6 @@ const CheckInGroup = () => {
           type="date"
           className="w-full h-full cursor-pointer text-left focus:outline-none"
           value={tglCheckinGroup}
-          placeholder="Check In"
           onChange={(date) => setTglCheckinGroup(date.target.value)}
           min={new Date().toISOString().split('T')[0]}
         />

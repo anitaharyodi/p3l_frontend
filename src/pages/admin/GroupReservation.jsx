@@ -1,17 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { PiBookOpenTextBold } from 'react-icons/pi'
-import CheckInGroup from '../../components/admin/CheckInGroup'
-import CheckOutGroup from '../../components/admin/CheckOutGroup'
-import AdultsInput from '../../components/admin/AdultsInput'
-import KidsInput from '../../components/admin/KidsInput'
-import CardFindRoomGroup from '../../components/admin/CardFindRoomGroup'
-import BookingListGroup from '../../components/admin/BookingListGroup'
-import { RoomContext } from '../../context/RoomContext'
-import moment from 'moment'
-import axios from 'axios'
+import React, { useContext, useEffect, useState } from "react";
+import { PiBookOpenTextBold } from "react-icons/pi";
+import CheckInGroup from "../../components/admin/CheckInGroup";
+import CheckOutGroup from "../../components/admin/CheckOutGroup";
+import AdultsInput from "../../components/admin/AdultsInput";
+import KidsInput from "../../components/admin/KidsInput";
+import CardFindRoomGroup from "../../components/admin/CardFindRoomGroup";
+import BookingListGroup from "../../components/admin/BookingListGroup";
+import { RoomContext } from "../../context/RoomContext";
+import moment from "moment";
+import axios from "axios";
+import { useLocation, useParams } from "react-router";
 
 const GroupReservation = () => {
-    const { handleClickGroup, tglCheckinGroup, tglCheckOutGroup } = useContext(RoomContext);
+  const { handleClickGroup, tglCheckinGroup, tglCheckOutGroup } =
+    useContext(RoomContext);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = searchParams.get("id");
   const [jenisKamarBySeason, setJenisKamarBySeason] = useState([]);
   const [ketersediaanKamar, setKetersediaanKamar] = useState([]);
 
@@ -61,47 +66,52 @@ const GroupReservation = () => {
         Group Reservation
       </div>
       <div className="">
-          <form className="h-[300px] w-full lg:h-[60px]">
-            <div className="flex flex-col w-full h-full lg:flex-row">
-              <div className="flex-1 border-t-1 border-l-1 border-b-1 rounded-l-md">
-                <CheckInGroup />
-              </div>
-              <div className="flex-1 border-t-1 border-l-1 border-b-1">
-                <CheckOutGroup />
-              </div>
-              <div className="flex-1 border-t-1 border-l-1 border-b-1">
-                <AdultsInput />
-              </div>
-              <div className="flex-1 border-t-1 border-r-1 border-b-1 rounded-r-md">
-                <KidsInput />
-              </div>
+        <form className="h-[300px] w-full lg:h-[60px]">
+          <div className="flex flex-col w-full h-full lg:flex-row">
+            <div className="flex-1 border-t-1 border-l-1 border-b-1 rounded-l-md">
+              <CheckInGroup />
             </div>
-          </form>
+            <div className="flex-1 border-t-1 border-l-1 border-b-1">
+              <CheckOutGroup />
+            </div>
+            <div className="flex-1 border-t-1 border-l-1 border-b-1">
+              <AdultsInput />
+            </div>
+            <div className="flex-1 border-t-1 border-r-1 border-b-1 rounded-r-md">
+              <KidsInput />
+            </div>
+          </div>
+        </form>
         <div className="flex flex-col lg:flex-row h-full mt-8">
           <div className="w-full h-full lg:w-[65%] pr-6">
             <div className="mb-6">
-              {jenisKamarBySeason.map((item, index) => (
-                <CardFindRoomGroup
-                  key={item.id}
-                  jenisKamarBySeason={item}
-                  imgIndex={index}
-                  ketersediaanKamar={
-                    ketersediaanKamar?.find(
-                      (kk) => kk.id_jenis_kamar == item.id
-                    )?.totalKamar
-                  }
-                />
-              ))}
+              {jenisKamarBySeason.map((item, index) => {
+                const totalKamar = ketersediaanKamar?.find(
+                  (kk) => kk.id_jenis_kamar === item.id
+                )?.totalKamar;
+
+                if (totalKamar > 0) {
+                  return (
+                    <CardFindRoomGroup
+                      key={item.id}
+                      jenisKamarBySeason={item}
+                      imgIndex={index}
+                      ketersediaanKamar={totalKamar}
+                    />
+                  );
+                }
+
+                return null;
+              })}
             </div>
           </div>
-          <div className="w-full h-full lg:w-[35%] mb-8 sticky top-20">
-            <BookingListGroup />
+          <div className="w-full h-full lg:w-[35%] mb-8 sticky top-10">
+            <BookingListGroup id={id} />
           </div>
         </div>
       </div>
-      
-      </section>
-  )
-}
+    </section>
+  );
+};
 
-export default GroupReservation
+export default GroupReservation;

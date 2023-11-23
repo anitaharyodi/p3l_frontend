@@ -20,7 +20,6 @@ const RoomProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [isLoginPegawai, setIsLoginPegawai] = useState(false);
   const [bookingList, setBookingList] = useState([]);
-  const [bookingListGroup, setBookingListGroup] = useState([]);
 
   // For Group Reservation
   const [tglCheckinGroup, setTglCheckinGroup] = useState(new Date().toISOString().split('T')[0]);
@@ -29,8 +28,9 @@ const RoomProvider = ({ children }) => {
   tomorrowGroup.setDate(todayGroup.getDate() + 1);
   const tomorrowDate = tomorrowGroup.toISOString().split('T')[0];
   const [tglCheckOutGroup, setTglCheckOutGroup] = useState(tomorrowDate);
-  const [adultsGroup, setAdultsGroup] = useState("1 Adults");
-  const [kidsGroup, setKidsGroup] = useState("0 Kids");
+  const [adultsGroup, setAdultsGroup] = useState();
+  const [kidsGroup, setKidsGroup] = useState();
+  const [bookingListGroup, setBookingListGroup] = useState([]);
 
   useEffect(() => {
     setTotal((Number(adults[0]) + Number(kids[0])) / 2);

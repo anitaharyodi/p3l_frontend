@@ -158,6 +158,7 @@ const CardFindRoom = ({jenisKamarBySeason, imgIndex, ketersediaanKamar}) => {
               <button
                 className="px-3 py-1 border-1 hover:bg-gray-100  hover:text-gray-700 rounded-r-sm focus:outline-none"
                 onClick={() => setQuantity(quantity + 1)}
+                disabled={quantity === ketersediaanKamar}
               >
                 +
               </button>

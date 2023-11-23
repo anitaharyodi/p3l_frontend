@@ -207,6 +207,7 @@ const CustomerPage = () => {
       no_telepon: currentCustomerData.no_telepon,
       alamat: currentCustomerData.alamat,
       role: "G",
+      id_sm: getIdLogin,
     };
 
     const apiURL = "http://localhost:8000/api/register";
@@ -310,7 +311,7 @@ const CustomerPage = () => {
               <TableCell className="text-medium">{item.no_telepon}</TableCell>
               <TableCell className="text-medium">{item.alamat}</TableCell>
               <TableCell className="w-[50px]">
-                {item.reservations.some(reservation => reservation.id_sm == getIdLogin) ? (
+                {item.reservations.some(reservation => reservation.id_sm == getIdLogin) || item.id_sm == getIdLogin ? (
                 <div className="relative flex items-center">
                   <Dropdown>
                     <DropdownTrigger>

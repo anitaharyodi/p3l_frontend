@@ -51,6 +51,7 @@ const BookingList = () => {
     jumlah: booking.quantity,
     hargaPerMalam: booking.hargaPerMalam,
   }));
+  
 
   console.log(JSON.stringify(transformedBookingList, null, 2));
 
@@ -73,6 +74,8 @@ const BookingList = () => {
       total_harga: totalPrice,
       jenis_kamar: transformedBookingList,
     };
+
+    // console.log(JSON.stringify(transformedBookingList,null, 2))
 
     const apiURL = "http://localhost:8000/api/reservasi";
     axios
@@ -108,6 +111,11 @@ const BookingList = () => {
           Booking List
         </p>
       </div>
+      {bookingList.length === 0 && (
+        <><div className="flex justify-center items-center">
+          <img src={assets.EMPTYDATA} width={150}/>
+        </div><p className="-mt-10 text-center font-semibold text-gray-500">Please choose your room first</p></>
+      )}
       <div className={`${bookingList.length === 1 ? "-mt-[130px]" : ""}`}>
         {bookingList.map((booking, index) => (
           <div key={booking.jenis_kamar}>

@@ -18,6 +18,7 @@ import Room8ImgLg from './img/rooms/8-lg.png'
 import HotelArc from './img/hotelArc.jpg'
 import InfoIcon from './img/infoIcon.png'
 import bankDiamond from './img/diamondBank.png'
+import emptyData from './img/emptyData.jpg'
 
 export default {
     LOGO_BAWAH : LogoBawah,
@@ -39,5 +40,6 @@ export default {
     ROOM8: Room8ImgLg,
     HOTELARC : HotelArc,
     INFOICON : InfoIcon,
-    DIAMONDBANK : bankDiamond
+    DIAMONDBANK : bankDiamond,
+    EMPTYDATA : emptyData,
 }

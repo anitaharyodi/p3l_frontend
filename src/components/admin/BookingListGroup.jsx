@@ -17,14 +17,13 @@ import assets from "../../assets";
 
 const roomImages = [assets.ROOM4, assets.ROOM2, assets.ROOM3, assets.ROOM1];
 
-const BookingListGroup = () => {
+const BookingListGroup = ({id}) => {
   const { bookingListGroup, tglCheckinGroup, tglCheckOutGroup, adultsGroup, kidsGroup } =
     useContext(RoomContext);
   const authToken = localStorage.getItem("tokenPegawai");
   const navigate = useNavigate();
   const checkInDate = new Date(tglCheckinGroup);
   const checkOutDate = new Date(tglCheckOutGroup);
-  console.log("LIAT", checkOutDate);
   const timeDifference = checkOutDate - checkInDate;
 
   const [numberOfNights, setNumberOfNights] = useState(0);
@@ -35,7 +34,6 @@ const BookingListGroup = () => {
     setNumberOfNights(roundedNights);
   }, [tglCheckinGroup, tglCheckOutGroup]);
 
-  console.log("MALAM", JSON.stringify(bookingListGroup, null, 2));
 
   const formatCurrency = (number) => {
     return `Rp ${new Intl.NumberFormat("id-ID").format(number)}`;
@@ -52,8 +50,6 @@ const BookingListGroup = () => {
     hargaPerMalam: booking.hargaPerMalam,
   }));
 
-  console.log(JSON.stringify(transformedBookingList, null, 2));
-
   const formattedDateCheckin = moment(tglCheckinGroup).format("YYYY-MM-DD");
   const formattedDateCheckout = moment(tglCheckOutGroup).format("YYYY-MM-DD");
 
@@ -66,6 +62,7 @@ const BookingListGroup = () => {
 
   const handleBooking = () => {
     const body = {
+      id_customer: id,
       tgl_checkin: formattedDateCheckin,
       tgl_checkout: formattedDateCheckout,
       jumlah_dewasa: parseInt(adultsGroup),
@@ -84,7 +81,7 @@ const BookingListGroup = () => {
       .then((response) => {
         console.log("Booking data successfully:", response.data);
         const reservationId = response.data.data.reservasi.id;
-        navigate(`/book/${reservationId}`, { state: { bookingListGroup } });
+        navigate(`/home/bookGroup/${reservationId}`, { state: { bookingListGroup } });
       })
       .catch((error) => {
         toast.error(error.response.data.message, {
@@ -95,7 +92,7 @@ const BookingListGroup = () => {
         });
         onModalOpenChange(false);
         if (error.response.data.message == "You are not logged in yet!") {
-          navigate("/login");
+          navigate("/admin");
         }
       });
   };
@@ -108,6 +105,11 @@ const BookingListGroup = () => {
           Booking List
         </p>
       </div>
+      {bookingListGroup.length === 0 && (
+        <><div className="flex justify-center items-center">
+          <img src={assets.EMPTYDATA} width={150}/>
+        </div><p className="-mt-10 text-center font-semibold text-gray-500 text-[16px]">Please choose your room first</p></>
+      )}
       <div className={`${bookingListGroup.length === 1 ? "-mt-[130px]" : ""}`}>
         {bookingListGroup.map((booking, index) => (
           <div key={booking.jenis_kamar}>

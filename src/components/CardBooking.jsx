@@ -167,6 +167,8 @@ const CardBooking = ({
       });
   };
   
+  const formattedTglCheckin = new Date(tglCheckin).toLocaleDateString();
+  const currentDate = new Date().toLocaleDateString();
 
 
   return (
@@ -229,7 +231,7 @@ const CardBooking = ({
             <p className="text-gray-500 mt-3">Payment Date : {tglPembayaran}</p>
         )}
         <div>
-          {status == 'Waiting for payment' && (
+          {status == 'Waiting for payment' && formattedTglCheckin >= currentDate  && (
             <Button
               variant="bordered"
               className="font-semibold border-1 border-[#1E2131] text-[#1E2131] w-[150px] mt-3 mr-4"

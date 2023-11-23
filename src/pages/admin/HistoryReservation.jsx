@@ -24,8 +24,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
+import { GiReceiveMoney } from "react-icons/gi";
 import { MdLibraryBooks } from "react-icons/md";
-import { useLocation } from "react-router";
+import { IoCloseSharp } from "react-icons/io5";
+import { useLocation, useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import { BiSolidDownload } from "react-icons/bi";
 
 const HistoryReservation = () => {
   const location = useLocation();
@@ -40,6 +44,7 @@ const HistoryReservation = () => {
   const [reservasi, setReservasi] = useState([]);
   const [bookRoom, setBookRoom] = useState([]);
   const [facilityBook, setFacilityBook] = useState([]);
+  const navigate = useNavigate();
 
   const [currentHistoryId, setCurrentHistoryId] = useState(null);
   const [currentHistoryData, setCurrentHistoryData] = useState({
@@ -78,10 +83,24 @@ const HistoryReservation = () => {
     onClose: closeCreateModal,
   } = useDisclosure();
 
+  const {
+    isOpen: CancelModalOpen,
+    onOpen: openCancelModal,
+    onOpenChange: onCancelModalOpenChange,
+    onClose: closeCancelModal,
+  } = useDisclosure();
+
   const openCreateModalWithId = (reservationId) => {
     setCurrentHistoryId(reservationId);
     console.log(reservationId);
+    fetchHistoryById(reservationId);
     openCreateModal();
+  };
+
+  const openCancelModalWithId = (reservationId) => {
+    setCurrentHistoryId(reservationId);
+    console.log(reservationId);
+    openCancelModal();
   };
 
   const columnsKamar = [
@@ -90,8 +109,8 @@ const HistoryReservation = () => {
       label: "ROOM TYPE",
     },
     {
-      key: "kapasitas",
-      label: "CAPACITY",
+      key: "jumlah",
+      label: "AMOUNT",
     },
     {
       key: "tarif_normal",
@@ -132,28 +151,34 @@ const HistoryReservation = () => {
       .get(apiURL, axiosConfig)
       .then((response) => {
         setHistoryData(response.data.data);
-        const bookRoomData = [];
-        const facilityBookData = [];
-        response.data.data.reservations.forEach((reservation) => {
-          bookRoomData.push(reservation.reservasi_kamars);
-          facilityBookData.push(reservation.transaksi_fasilitas);
-        });
-
-        setBookRoom(bookRoomData);
-        setFacilityBook(facilityBookData);
-
-        const flattenedBookRoom = [].concat(...bookRoomData);
-        const flattenedFacilityBook = [].concat(...facilityBookData);
-        setBookRoom(flattenedBookRoom);
-        setFacilityBook(flattenedFacilityBook);
       })
       .catch((error) => {
         console.error("Error fetching history data: ", error);
       });
   };
+
+  const fetchHistoryById = (reservationId) => {
+    const axiosConfig = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    };
+    const apiURL = `http://localhost:8000/api/history/${reservationId}`;
+    console.log(reservationId);
+    axios
+      .get(apiURL, axiosConfig)
+      .then((response) => {
+        console.log(bookRoom);
+        setBookRoom(response.data.data.reservasi_kamars);
+        setFacilityBook(response.data.data.transaksi_fasilitas);
+      })
+      .catch((error) => {
+        console.error("Error fetching data from the API: " + error);
+      });
+  };
+
   useEffect(() => {
     fetchHistoryData();
-    // console.log(JSON.stringify(facilityBook,null,2))
   }, [authToken]);
   //Search
   const filteredHistoryData = historyData.reservations?.filter((item) => {
@@ -203,6 +228,64 @@ const HistoryReservation = () => {
       label: "ACTIONS",
     },
   ];
+
+  const handlePembatalan = (idReservation) => {
+    const axiosConfig = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    };
+
+    const apiURL = `http://localhost:8000/api/reservasi/pemesananBatal/${idReservation}`;
+
+    axios
+      .post(apiURL, null, axiosConfig)
+      .then((response) => {
+        console.log(JSON.stringify(response, null, 2));
+        if (response.status === 200) {
+          toast.success("The booking has been cancelled!", {
+            position: "top-right",
+            hideProgressBar: true,
+            theme: "colored",
+            autoClose: 1000,
+          });
+          onCancelModalOpenChange(false);
+          window.location.reload();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const getPDF = (idReservation, idBooking) => {
+    const axiosConfig = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+      responseType: 'blob',
+    };
+    const apiURL = `http://localhost:8000/api/generate-pdf/${idReservation}`;
+    
+    axios
+      .get(apiURL, axiosConfig)
+      .then((response) => {
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+  
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `reservation_${idBooking}.pdf`;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+  
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <section>
@@ -299,8 +382,28 @@ const HistoryReservation = () => {
                       >
                         See Details
                       </DropdownItem>
+
+                      {item.status === "Waiting for payment" && (
+                        <DropdownItem
+                          color="warning"
+                          startContent={<GiReceiveMoney />}
+                          onClick={() =>
+                            navigate(`/home/bookGroup/${item.id}#payment`)
+                          }
+                        >
+                          Pay DP
+                        </DropdownItem>
+                      )}
                     </DropdownMenu>
                   </Dropdown>
+                  {item.status === "Waiting for payment" ||
+                  item.status === "Confirmed" ? (
+                    <button onClick={() => openCancelModalWithId(item.id)}>
+                      <IoCloseSharp className="text-danger-500 ml-3 text-lg " />
+                    </button>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </TableCell>
             </TableRow>
@@ -314,9 +417,22 @@ const HistoryReservation = () => {
         size="2xl"
       >
         <ModalContent>
-          <ModalHeader className="flex flex-col gap-1">
-            Detail Reservation
-          </ModalHeader>
+        {items
+            ?.filter((item) => item.id === currentHistoryId)
+            .map((item, i) => (
+        <ModalHeader key={item.id} className="flex justify-between">
+              <p>Detail Reservation</p>
+              {item.status == "Confirmed" || item.status === "Check In" ? (
+              <div>
+              <button className="text-[14px] bg-[#1E2131] text-white px-2 py-1 rounded-md mr-6 flex items-center" onClick={() => getPDF(item.id, item.id_booking)}>
+                <BiSolidDownload className="mr-2"/>
+                Reservation Receipt
+                </button>
+              </div>
+
+              ): ""}
+            </ModalHeader>
+            ))}
           {items
             ?.filter((item) => item.id === currentHistoryId)
             .map((item, i) => (
@@ -408,10 +524,22 @@ const HistoryReservation = () => {
                   </div>
                   <div className="flex justify-between">
                     <div>
+                      <p className="font-semibold">Total Price</p>
+                    </div>
+                    <div>
+                        <p className="">{formatCurrency(item.total_harga)}</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div>
                       <p className="font-semibold">Down Payment</p>
                     </div>
                     <div>
-                      <p className="">{formatCurrency(item.uang_jaminan)}</p>
+                      {item.status == "Waiting for payment" ? (
+                        <p className="">-</p>
+                      ) : (
+                        <p className="">{formatCurrency(item.uang_jaminan)}</p>
+                      )}
                     </div>
                   </div>
                   <div className="flex justify-between">
@@ -419,7 +547,11 @@ const HistoryReservation = () => {
                       <p className="font-semibold">Payment Date</p>
                     </div>
                     <div>
-                      <p className="">{formatDate(item.tgl_pembayaran)}</p>
+                      {item.tgl_pembayaran === null ? (
+                        <p className="">-</p>
+                      ) : (
+                        <p className="">{formatDate(item.tgl_pembayaran)}</p>
+                      )}
                     </div>
                   </div>
                 </>
@@ -439,17 +571,45 @@ const HistoryReservation = () => {
                         )}
                       </TableHeader>
                       <TableBody>
-                        {bookRoom.map((item, i) => (
-                          <TableRow key={item.id}>
-                            <TableCell>
-                              {item.jenis_kamars.jenis_kamar}
-                            </TableCell>
-                            <TableCell>{item.jenis_kamars.kapasitas}</TableCell>
-                            <TableCell>
-                              {formatCurrency(item.jenis_kamars.tarif_normal)}
-                            </TableCell>
-                          </TableRow>
-                        ))}
+                        {(() => {
+                          // Create an object to store counts for each jenis_kamar
+                          const jenisKamarCounts = {};
+                          bookRoom.forEach((item) => {
+                            const jenisKamar = item.jenis_kamars.jenis_kamar;
+                            jenisKamarCounts[jenisKamar] =
+                              (jenisKamarCounts[jenisKamar] || 0) + 1;
+                          });
+
+                          // Map through unique jenis_kamar values
+                          return Array.from(
+                            new Set(
+                              bookRoom.map(
+                                (item) => item.jenis_kamars.jenis_kamar
+                              )
+                            )
+                          ).map((jenisKamar, index) => {
+                            const totalKamar = jenisKamarCounts[jenisKamar];
+                            const filteredItems = bookRoom.filter(
+                              (item) =>
+                                item.jenis_kamars.jenis_kamar === jenisKamar
+                            );
+                            const hargaPerMalamTotal = filteredItems.reduce(
+                              (total, item) =>
+                                total + item.hargaPerMalam,
+                              0
+                            );
+
+                            return (
+                              <TableRow key={index}>
+                                <TableCell>{jenisKamar}</TableCell>
+                                <TableCell>{totalKamar}</TableCell>
+                                <TableCell>
+                                  {formatCurrency(hargaPerMalamTotal)}
+                                </TableCell>
+                              </TableRow>
+                            );
+                          });
+                        })()}
                       </TableBody>
                     </Table>
                   </>
@@ -483,7 +643,7 @@ const HistoryReservation = () => {
                               {formatDate(item.tgl_pemakaian)}
                             </TableCell>
                             <TableCell>
-                              {formatCurrency(item.subtotal)}
+                              {formatCurrency(item.subtotal * item.jumlah)}
                             </TableCell>
                           </TableRow>
                         ))}
@@ -496,6 +656,44 @@ const HistoryReservation = () => {
               </ModalBody>
             ))}
           <ModalFooter></ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Modal Confirmation Cancel Booking */}
+      <Modal isOpen={CancelModalOpen} onOpenChange={onCancelModalOpenChange}>
+        <ModalContent>
+          <ModalHeader>
+            <div className="flex flex-col items-center w-full">
+              <p className="text-center mt-1 uppercase text-[#1E2131] font-bold tracking-[1px]">
+                Confirmation
+              </p>
+            </div>
+          </ModalHeader>
+          <ModalBody>
+            <p className="font-semibold text-center">
+              Are you sure want to cancel this booking?
+            </p>
+          </ModalBody>
+          {items
+            ?.filter((item) => item.id === currentHistoryId)
+            .map((item, i) => (
+              <ModalFooter key={item.id}>
+                <button
+                  className="w-[200px] h-[40px] rounded-md text-black"
+                  onClick={() => {
+                    closeCancelModal();
+                  }}
+                >
+                  No
+                </button>
+                <button
+                  className="bg-[#1E2131] text-white w-[200px] h-[40px] rounded-md"
+                  onClick={() => handlePembatalan(item.id)}
+                >
+                  Yes
+                </button>
+              </ModalFooter>
+            ))}
         </ModalContent>
       </Modal>
     </section>

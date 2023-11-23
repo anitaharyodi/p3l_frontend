@@ -21,6 +21,9 @@ import HistoryReservation from "./pages/admin/HistoryReservation";
 import SearchBookRoom from "./pages/SearchBookRoom";
 import Booking from "./pages/Booking";
 import GroupReservation from "./pages/admin/GroupReservation";
+import GroupBooking from "./pages/admin/GroupBooking";
+import CustomerStay from "./pages/admin/CustomerStay";
+import CheckinPage from "./pages/admin/CheckinPage";
 
 const App = () => {
   const { setIsLogin, setIsLoginPegawai } = useContext(RoomContext);
@@ -80,6 +83,9 @@ const App = () => {
                     <Route path="customer" element={<CustomerPage />} />
                     <Route path="reservation" element={<GroupReservation />} />
                     <Route path="historyReservation" element={<HistoryReservation />} />
+                    <Route path="bookGroup/:id" element={<GroupBooking />} />
+                    <Route path="customerStay" element={<CustomerStay />} />
+                    <Route path="checkin" element={<CheckinPage />} />
                   </Routes>
                 </div>
               </>

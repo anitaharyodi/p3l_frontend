@@ -101,18 +101,24 @@ const SearchBookRoom = () => {
         <div className="flex flex-col lg:flex-row h-full mt-8">
           <div className="w-full h-full lg:w-[70%] px-6">
             <div className="mb-6">
-              {jenisKamarBySeason.map((item, index) => (
-                <CardFindRoom
-                  key={item.id}
-                  jenisKamarBySeason={item}
-                  imgIndex={index}
-                  ketersediaanKamar={
-                    ketersediaanKamar?.find(
-                      (kk) => kk.id_jenis_kamar == item.id
-                    )?.totalKamar
-                  }
-                />
-              ))}
+              {jenisKamarBySeason.map((item, index) => {
+                const totalKamar = ketersediaanKamar?.find(
+                  (kk) => kk.id_jenis_kamar === item.id
+                )?.totalKamar;
+
+                if (totalKamar > 0) {
+                  return (
+                    <CardFindRoom
+                      key={item.id}
+                      jenisKamarBySeason={item}
+                      imgIndex={index}
+                      ketersediaanKamar={totalKamar}
+                    />
+                  );
+                }
+
+                return null;
+              })}
             </div>
           </div>
           <div className="w-full h-full lg:w-[30%] mr-6 mb-8 sticky top-20">

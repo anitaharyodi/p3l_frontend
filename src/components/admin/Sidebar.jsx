@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import assets from "../../assets";
 import { BiSolidDashboard, BiSolidLogOut } from "react-icons/bi";
-import { MdMeetingRoom } from "react-icons/md";
+import { MdMeetingRoom, MdNightsStay } from "react-icons/md";
 import { BsFillTicketPerforatedFill, BsFillPersonFill, BsGraphUp } from "react-icons/bs";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import { FaMoneyBills } from "react-icons/fa6";
@@ -111,6 +111,17 @@ export default function Sidebar() {
                       </Link>
                     </li>
                   </>
+                )}
+                {getRole === "Front Office" && (
+                  <li className="rounded-lg mb-2">
+                    <Link
+                      to="/home/customerStay"
+                      className="flex items-center gap-4 text-md text-white px-4 rounded-lg py-2 hover:bg-accent"
+                    >
+                      <MdNightsStay className="text-xl" />
+                      Customer Stays
+                    </Link>
+                  </li>
                 )}
 
                 {getRole === "Owner" || getRole === "General Manager" ? (
