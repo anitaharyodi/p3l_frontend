@@ -125,13 +125,41 @@ export default function Sidebar() {
                 )}
 
                 {getRole === "Owner" || getRole === "General Manager" ? (
-                  <Link
-                    // to="/"
-                    className="flex items-center gap-4 text-md text-white px-4 rounded-lg py-2 hover:bg-accent"
-                  >
-                    <BsGraphUp className="text-xl" />
-                    Report
-                  </Link>
+                 <><NavLink
+                  className="flex items-center gap-4 text-md text-white px-4 rounded-lg py-2 cursor-default"
+                >
+                  <BsGraphUp className="text-xl" />
+                  Report
+                </NavLink>
+                
+                <div className="pl-8">
+                    <Link
+                       to="/home/report1"
+                      className="flex items-center gap-2 text-md text-white px-2 rounded py-2 hover:bg-accent"
+                    >
+                      • New Customer
+                    </Link>
+                    <Link
+                       to="/home/report2"
+                      className="flex items-center gap-2 text-md text-white px-2 rounded py-2 hover:bg-accent"
+                    >
+                     • Monthly Income
+                    </Link>
+                    <Link
+                       to="/home/report3"
+                      className="flex items-center gap-2 text-md text-white px-2 rounded py-2 hover:bg-accent"
+                    >
+                     • Guest Staying
+                    </Link>
+                    <Link
+                       to="/home/report4"
+                      className="flex items-center gap-2 text-md text-white px-2 rounded py-2 hover:bg-accent"
+                    >
+                     • Most Customer Reservations
+                    </Link>
+
+                  </div>
+                  </>
                 ) : null}
             </ul>
 

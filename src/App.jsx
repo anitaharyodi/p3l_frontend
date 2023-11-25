@@ -24,6 +24,10 @@ import GroupReservation from "./pages/admin/GroupReservation";
 import GroupBooking from "./pages/admin/GroupBooking";
 import CustomerStay from "./pages/admin/CustomerStay";
 import CheckinPage from "./pages/admin/CheckinPage";
+import Report1 from "./pages/admin/Report1";
+import Report2 from "./pages/admin/Report2";
+import Report3 from "./pages/admin/Report3";
+import Report4 from "./pages/admin/Report4";
 
 const App = () => {
   const { setIsLogin, setIsLoginPegawai } = useContext(RoomContext);
@@ -86,6 +90,10 @@ const App = () => {
                     <Route path="bookGroup/:id" element={<GroupBooking />} />
                     <Route path="customerStay" element={<CustomerStay />} />
                     <Route path="checkin" element={<CheckinPage />} />
+                    <Route path="report1" element={<Report1 />} />
+                    <Route path="report2" element={<Report2 />} />
+                    <Route path="report3" element={<Report3 />} />
+                    <Route path="report4" element={<Report4 />} />
                   </Routes>
                 </div>
               </>

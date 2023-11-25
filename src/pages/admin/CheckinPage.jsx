@@ -198,8 +198,9 @@ const CheckinPage = () => {
                       {!item.is_available && (
                         <p className="text-sm text-gray-700 font-semibold mb-2 bg-white p-2 rounded-md">
                           {
-                            item.room.reservasi_kamars[0]?.reservasis.customers
-                              .nama
+                            item.room.reservasi_kamars[
+                              item.room.reservasi_kamars.length - 1
+                            ]?.reservasis.customers.nama
                           }
                         </p>
                       )}
@@ -210,7 +211,7 @@ const CheckinPage = () => {
           </div>
 
           <div className="w-full h-full lg:w-[35%] mb-8 sticky top-10">
-            <div className="bg-white min-h-[450px] shadow-md rounded-md justify-between">
+            <div className="bg-white min-h-[450px] mb-10 shadow-md rounded-md justify-between">
               <div className="bg-[#1E2131] h-[70px] rounded-t-md">
                 <p className="text-white p-4 text-[25px] font-semibold font-tertiary tracking-[1px] flex items-center">
                   <IoEnterOutline className="text-md mr-2" />
