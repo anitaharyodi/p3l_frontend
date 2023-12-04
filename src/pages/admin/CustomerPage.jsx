@@ -88,7 +88,7 @@ const CustomerPage = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/customer";
+    const apiURL = "https://ah-project.my.id/api/customer";
 
     axios
       .get(apiURL, axiosConfig)
@@ -210,7 +210,7 @@ const CustomerPage = () => {
       id_sm: getIdLogin,
     };
 
-    const apiURL = "http://localhost:8000/api/register";
+    const apiURL = "https://ah-project.my.id/api/register";
     // console.log("BODYYY", body);
 
     axios

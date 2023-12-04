@@ -51,7 +51,7 @@ const CheckinPage = () => {
         },
       };
 
-      const apiURL = `http://localhost:8000/api/reservasiKamar?tgl_checkin=${item.tgl_checkin}`;
+      const apiURL = `https://ah-project.my.id/api/reservasiKamar?tgl_checkin=${item.tgl_checkin}`;
 
       axios
         .get(apiURL, axiosConfig)
@@ -84,7 +84,7 @@ const CheckinPage = () => {
         }));
         return prevInputDeposito;
       });
-      const apiURL = `http://localhost:8000/api/checkin/${item.id}`;
+      const apiURL = `https://ah-project.my.id/api/checkin/${item.id}`;
       console.log(JSON.stringify(noRoomData, null, 2));
       axios
         .post(apiURL, noRoomData, {
@@ -171,10 +171,10 @@ const CheckinPage = () => {
                     key={index}
                     className={`border rounded p-4 shadow-md ${
                       item.is_available
-                        ? item.room.no_kamar ===
+                        ? item.room.no_kamar ==
                           selectedRooms.find(
                             (selectedRoom) =>
-                              selectedRoom === item.room.no_kamar
+                              selectedRoom == item.room.no_kamar
                           )
                           ? "bg-[#1E2131]"
                           : "bg-success-500 hover:bg-[#1E2131] cursor-pointer"
@@ -246,12 +246,12 @@ const CheckinPage = () => {
                   <div
                     key={index}
                     className={`flex items-center px-4 mb-2 mx-4 rounded-md ${
-                      activeStep === index + 1 ? "bg-[#1E2131]" : ""
+                      activeStep == index + 1 ? "bg-[#1E2131]" : ""
                     }`}
                   >
                     <div
                       className={`w-12 p-1 text-left ${
-                        activeStep === index + 1 ? "text-white" : ""
+                        activeStep == index + 1 ? "text-white" : ""
                       }`}
                     >
                       <p>{index + 1}</p>
@@ -260,7 +260,7 @@ const CheckinPage = () => {
                       <input
                         type="text"
                         value={
-                          activeStep === index + 1 ? "" : selectedRooms[index]
+                          activeStep == index + 1 ? "" : selectedRooms[index]
                         }
                         className="w-[120px] px-2 rounded-md bg-gray-100 focus:outline-none"
                         readOnly
@@ -268,7 +268,7 @@ const CheckinPage = () => {
                     </div>
                     <div
                       className={`flex-1 p-1 px-2 text-center ${
-                        activeStep === index + 1 ? "text-white" : ""
+                        activeStep == index + 1 ? "text-white" : ""
                       }`}
                     >
                       <p>{reservasi_kamar.jenis_kamars.jenis_kamar}</p>
@@ -280,7 +280,7 @@ const CheckinPage = () => {
                 <button
                   className={`btn btn-secondary p-2 w-full h-10 rounded-bl-md rounded-br-md ${
                     selectedRooms.length < item.reservasi_kamars.length ||
-                    selectedRooms.some((room) => room === "")
+                    selectedRooms.some((room) => room == "")
                       ? "opacity-50 cursor-not-allowed"
                       : ""
                   }`}
@@ -288,7 +288,7 @@ const CheckinPage = () => {
                     console.log("Selected Rooms:", selectedRooms);
 
                     if (
-                      selectedRooms.length === item.reservasi_kamars.length &&
+                      selectedRooms.length == item.reservasi_kamars.length &&
                       selectedRooms.every(
                         (room) => room && room.toString().trim() !== ""
                       )

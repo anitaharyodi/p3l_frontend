@@ -95,7 +95,7 @@ const RoomAdmin = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/kamar";
+    const apiURL = "https://ah-project.my.id/api/kamar";
 
     axios
       .get(apiURL, axiosConfig)
@@ -119,7 +119,7 @@ const RoomAdmin = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/jenisKamar";
+    const apiURL = "https://ah-project.my.id/api/jenisKamar";
 
     axios
       .get(apiURL, axiosConfig)
@@ -205,7 +205,7 @@ const RoomAdmin = () => {
           Authorization: `Bearer ${authToken}`,
         },
       };
-      const apiURL = `http://localhost:8000/api/kamar/${currentRoomId}`;
+      const apiURL = `https://ah-project.my.id/api/kamar/${currentRoomId}`;
 
       axios
         .get(apiURL, axiosConfig)
@@ -245,7 +245,7 @@ const RoomAdmin = () => {
       tipe_bed: currentRoomData.tipe_bed,
     };
 
-    const apiURL = "http://localhost:8000/api/kamar";
+    const apiURL = "https://ah-project.my.id/api/kamar";
 
     const axiosConfig = {
       headers: {
@@ -306,7 +306,7 @@ const RoomAdmin = () => {
       tipe_bed: currentRoomData.tipe_bed,
     };
 
-    const apiURL = `http://localhost:8000/api/kamar/${roomId}`;
+    const apiURL = `https://ah-project.my.id/api/kamar/${roomId}`;
     axios
       .post(apiURL, body, {
         headers: {
@@ -345,7 +345,7 @@ const RoomAdmin = () => {
         Authorization: `Bearer ${authToken}`,
       },
     };
-    const apiURL = `http://localhost:8000/api/kamar/${roomId}`;
+    const apiURL = `https://ah-project.my.id/api/kamar/${roomId}`;
 
     axios
       .delete(apiURL, axiosConfig)
@@ -435,20 +435,20 @@ const RoomAdmin = () => {
               <TableCell className="text-medium">
                 <Chip
                   className={
-                    item.jenis_kamars.jenis_kamar === "Superior"
+                    item.jenis_kamars.jenis_kamar == "Superior"
                       ? "bg-[#D0C379] text-white"
-                      : item.jenis_kamars.jenis_kamar === "Double Deluxe"
+                      : item.jenis_kamars.jenis_kamar == "Double Deluxe"
                       ? "bg-[#587889] text-white"
-                      : item.jenis_kamars.jenis_kamar === "Executive Deluxe"
+                      : item.jenis_kamars.jenis_kamar == "Executive Deluxe"
                       ? "bg-[#E69B35] text-white"
                       : "bg-[#334A50] text-white"
                   }
                   startContent={
-                    item.jenis_kamars.jenis_kamar === "Superior" ? (
+                    item.jenis_kamars.jenis_kamar == "Superior" ? (
                       <TbBrandSupernova className="ml-2" />
-                    ) : item.jenis_kamars.jenis_kamar === "Double Deluxe" ? (
+                    ) : item.jenis_kamars.jenis_kamar == "Double Deluxe" ? (
                       <FaCheckDouble className="ml-2" />
-                    ) : item.jenis_kamars.jenis_kamar === "Executive Deluxe" ? (
+                    ) : item.jenis_kamars.jenis_kamar == "Executive Deluxe" ? (
                       <GiDoubled className="ml-2" />
                     ) : (
                       <TiFlowChildren className="ml-2" />

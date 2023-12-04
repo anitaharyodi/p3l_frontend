@@ -55,7 +55,7 @@ const GroupBooking = () => {
   };
 
   const handleCheckboxChange = (e) => {
-    if (e.target.value === "other") {
+    if (e.target.value == "other") {
       setShowOtherTextArea(e.target.checked);
       setOtherRequest("");
     }
@@ -104,7 +104,7 @@ const GroupBooking = () => {
         Authorization: `Bearer ${authToken}`,
       }, 
     };
-    const apiURL = `http://localhost:8000/api/history/${id}`;
+    const apiURL = `https://ah-project.my.id/api/history/${id}`;
     axios
       .get(apiURL, axiosConfig)
       .then((response) => {
@@ -125,7 +125,7 @@ const GroupBooking = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/fasilitas";
+    const apiURL = "https://ah-project.my.id/api/fasilitas";
 
     axios
       .get(apiURL, axiosConfig)
@@ -216,7 +216,7 @@ const GroupBooking = () => {
         },
       };
 
-      const apiURL = `http://localhost:8000/api/transaksiFasilitas/${id}`;
+      const apiURL = `https://ah-project.my.id/api/transaksiFasilitas/${id}`;
       axios
         .post(apiURL, requestData, axiosConfig)
         .then((response) => {})
@@ -228,7 +228,7 @@ const GroupBooking = () => {
         special_req: otherRequest,
       };
 
-      const apiURLReservasi = `http://localhost:8000/api/reservasi/${id}`;
+      const apiURLReservasi = `https://ah-project.my.id/api/reservasi/${id}`;
       axios
         .post(apiURLReservasi, body, axiosConfig)
         .then((response) => {})
@@ -249,7 +249,7 @@ const GroupBooking = () => {
         },
       };
 
-      const apiURLReservasi = `http://localhost:8000/api/reservasi/${id}`;
+      const apiURLReservasi = `https://ah-project.my.id/api/reservasi/${id}`;
       axios
         .post(apiURLReservasi, body, axiosConfig)
         .then((response) => {
@@ -278,7 +278,7 @@ const GroupBooking = () => {
         },
       };
 
-      const apiURL = `http://localhost:8000/api/transaksiFasilitas/${id}`;
+      const apiURL = `https://ah-project.my.id/api/transaksiFasilitas/${id}`;
 
       axios
         .post(apiURL, requestData, axiosConfig)
@@ -322,7 +322,7 @@ const GroupBooking = () => {
         },
       };
 
-      const apiURL = `http://localhost:8000/api/reservasi/upload-pembayaran/${id}`;
+      const apiURL = `https://ah-project.my.id/api/reservasi/upload-pembayaran/${id}`;
       axios
         .post(apiURL, body, axiosConfig)
         .then((response) => {
@@ -379,7 +379,7 @@ const GroupBooking = () => {
         >
           <BreadcrumbItem
             className={`mx-4 ${
-              activeStep === "booking"
+              activeStep == "booking"
                 ? "font-semibold text-white"
                 : "text-white/60"
             }`}
@@ -388,7 +388,7 @@ const GroupBooking = () => {
           </BreadcrumbItem>
           <BreadcrumbItem
             className={`mx-4 ${
-              activeStep === "review"
+              activeStep == "review"
                 ? "font-semibold text-white"
                 : "text-white/60"
             }`}
@@ -397,7 +397,7 @@ const GroupBooking = () => {
           </BreadcrumbItem>
           <BreadcrumbItem
             className={`mx-4 ${
-              activeStep === "payment"
+              activeStep == "payment"
                 ? "font-semibold text-white"
                 : "text-white/60"
             }`}
@@ -408,7 +408,7 @@ const GroupBooking = () => {
       </div>
 
       <div className="container mx-auto">
-        {activeStep === "booking" ? (
+        {activeStep == "booking" ? (
           <>
             <h3 className="h3 mt-6">Room Booking Details</h3>
             <p className="font-secondary font-semibold text-[16px] text-gray-500">
@@ -650,7 +650,7 @@ const GroupBooking = () => {
             </Modal>
           </>
         ) : // Review Page
-        activeStep === "review" ? (
+        activeStep == "review" ? (
           <>
             <ScrollToTop />
             <h3 className="h3 mt-6">Please Review Your Booking</h3>
@@ -879,8 +879,8 @@ const GroupBooking = () => {
                   .filter((room, index, self) => {
                     return (
                       self.findIndex(
-                        (r) => r.id_jenis_kamar === room.id_jenis_kamar
-                      ) === index
+                        (r) => r.id_jenis_kamar == room.id_jenis_kamar
+                      ) == index
                     );
                   })
                   .map((room, index) => {

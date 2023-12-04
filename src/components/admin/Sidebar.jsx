@@ -26,7 +26,7 @@ export default function Sidebar() {
         return;
       }
 
-      const apiURL = "http://localhost:8000/api/logout";
+      const apiURL = "https://ah-project.my.id/api/logout";
 
       const headers = {
         Authorization: `Bearer ${tokenPegawai}`,
@@ -34,7 +34,7 @@ export default function Sidebar() {
 
       const response = await axios.post(apiURL, null, { headers });
 
-      if (response.status === 200) {
+      if (response.status == 200) {
         localStorage.removeItem("tokenPegawai");
         localStorage.removeItem("emailPegawai");
         localStorage.removeItem("role");
@@ -61,7 +61,7 @@ export default function Sidebar() {
             <hr className="my-4 min-w-full" />
 
             <ul className="flex-col min-w-full flex list-none">
-                {getRole === "Admin" && (
+                {getRole == "Admin" && (
                   <li className="rounded-lg mb-2">
                     <Link
                       to="/home/room"
@@ -72,7 +72,7 @@ export default function Sidebar() {
                     </Link>
                   </li>
                 )}
-                {getRole === "Sales Marketing" && (
+                {getRole == "Sales Marketing" && (
                   <>
                     <li className="rounded-lg mb-2">
                       <Link
@@ -112,7 +112,7 @@ export default function Sidebar() {
                     </li>
                   </>
                 )}
-                {getRole === "Front Office" && (
+                {getRole == "Front Office" && (
                   <li className="rounded-lg mb-2">
                     <Link
                       to="/home/customerStay"
@@ -124,7 +124,7 @@ export default function Sidebar() {
                   </li>
                 )}
 
-                {getRole === "Owner" || getRole === "General Manager" ? (
+                {getRole == "Owner" || getRole == "General Manager" ? (
                  <><NavLink
                   className="flex items-center gap-4 text-md text-white px-4 rounded-lg py-2 cursor-default"
                 >

@@ -64,7 +64,7 @@ const Rooms = () => {
   }, []);
 
   useEffect(() => {
-    const apiURL = "http://localhost:8000/api/jenisKamar";
+    const apiURL = "https://ah-project.my.id/api/jenisKamar";
 
     axios
       .get(apiURL)

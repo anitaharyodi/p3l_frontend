@@ -26,7 +26,7 @@ const GroupReservation = () => {
   const isFormEmpty = !tglCheckinGroup || !tglCheckOutGroup;
 
   useEffect(() => {
-    const apiURL = `http://localhost:8000/api/tarifBySeason?tgl_checkin=${formattedDateCheckin}&tgl_checkout=${formattedDateCheckout}`;
+    const apiURL = `https://ah-project.my.id/api/tarifBySeason?tgl_checkin=${formattedDateCheckin}&tgl_checkout=${formattedDateCheckout}`;
     axios
       .get(apiURL)
       .then((response) => {
@@ -43,7 +43,7 @@ const GroupReservation = () => {
   }, [tglCheckinGroup, tglCheckOutGroup]);
 
   useEffect(() => {
-    const apiURL = `http://localhost:8000/api/ketersediaanKamar?tgl_checkin=${formattedDateCheckin}&tgl_checkout=${formattedDateCheckout}`;
+    const apiURL = `https://ah-project.my.id/api/ketersediaanKamar?tgl_checkin=${formattedDateCheckin}&tgl_checkout=${formattedDateCheckout}`;
     axios
       .get(apiURL)
       .then((response) => {
@@ -87,7 +87,7 @@ const GroupReservation = () => {
             <div className="mb-6">
               {jenisKamarBySeason.map((item, index) => {
                 const totalKamar = ketersediaanKamar?.find(
-                  (kk) => kk.id_jenis_kamar === item.id
+                  (kk) => kk.id_jenis_kamar == item.id
                 )?.totalKamar;
 
                 if (totalKamar > 0) {

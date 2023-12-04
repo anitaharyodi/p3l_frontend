@@ -77,7 +77,7 @@ const BookingList = () => {
 
     // console.log(JSON.stringify(transformedBookingList,null, 2))
 
-    const apiURL = "http://localhost:8000/api/reservasi";
+    const apiURL = "https://ah-project.my.id/api/reservasi";
     axios
       .post(apiURL, body, {
         headers: {
@@ -111,12 +111,12 @@ const BookingList = () => {
           Booking List
         </p>
       </div>
-      {bookingList.length === 0 && (
+      {bookingList.length == 0 && (
         <><div className="flex justify-center items-center">
           <img src={assets.EMPTYDATA} width={150}/>
         </div><p className="-mt-10 text-center font-semibold text-gray-500">Please choose your room first</p></>
       )}
-      <div className={`${bookingList.length === 1 ? "-mt-[130px]" : ""}`}>
+      <div className={`${bookingList.length == 1 ? "-mt-[130px]" : ""}`}>
         {bookingList.map((booking, index) => (
           <div key={booking.jenis_kamar}>
             <div className="pt-6 px-6 flex items-center">

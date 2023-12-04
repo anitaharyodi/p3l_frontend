@@ -16,7 +16,7 @@ export default function Navbar({ showSidebar, setShowSidebar }) {
                     </button>
                     <div
                         className={`absolute top-2 md:hidden ${
-                            showSidebar === 'left-0' ? 'left-64' : '-left-64'
+                            showSidebar == 'left-0' ? 'left-64' : '-left-64'
                         } z-50 transition-all duration-300`}
                     >
                         <button

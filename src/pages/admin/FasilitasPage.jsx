@@ -101,7 +101,7 @@ const FasilitasPage = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/fasilitas";
+    const apiURL = "https://ah-project.my.id/api/fasilitas";
 
     axios
       .get(apiURL, axiosConfig)
@@ -169,7 +169,7 @@ const FasilitasPage = () => {
           Authorization: `Bearer ${authToken}`,
         },
       };
-      const apiURL = `http://localhost:8000/api/fasilitas/${currentFasilitasId}`;
+      const apiURL = `https://ah-project.my.id/api/fasilitas/${currentFasilitasId}`;
 
       axios
         .get(apiURL, axiosConfig)
@@ -213,7 +213,7 @@ const FasilitasPage = () => {
       satuan: currentFasilitasData.satuan,
     };
 
-    const apiURL = "http://localhost:8000/api/fasilitas";
+    const apiURL = "https://ah-project.my.id/api/fasilitas";
 
     const axiosConfig = {
       headers: {
@@ -222,7 +222,7 @@ const FasilitasPage = () => {
     };
 
     const isDuplicate = fasilitasData.some(
-      (fasilitas) => fasilitas.nama_fasilitas === currentFasilitasData.nama_fasilitas
+      (fasilitas) => fasilitas.nama_fasilitas == currentFasilitasData.nama_fasilitas
     );
     if (isDuplicate) {
       toast.error("Facility name must be unique", {
@@ -291,7 +291,7 @@ const FasilitasPage = () => {
       satuan: currentFasilitasData.satuan,
     };
 
-    const apiURL = `http://localhost:8000/api/fasilitas/${fasilitasId}`;
+    const apiURL = `https://ah-project.my.id/api/fasilitas/${fasilitasId}`;
     axios
       .post(apiURL, body, {
         headers: {
@@ -329,7 +329,7 @@ const FasilitasPage = () => {
         Authorization: `Bearer ${authToken}`,
       },
     };
-    const apiURL = `http://localhost:8000/api/fasilitas/${fasilitasId}`;
+    const apiURL = `https://ah-project.my.id/api/fasilitas/${fasilitasId}`;
 
     axios
       .delete(apiURL, axiosConfig)

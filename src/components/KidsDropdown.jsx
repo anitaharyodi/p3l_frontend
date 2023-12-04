@@ -17,7 +17,7 @@ const KidsDropdown = () => {
   return (
     <Menu as="div" className="w-full h-full bg-white relative">
       <Menu.Button className="w-full h-full flex items-center justify-between px-8">
-        {kids === '0 Kids' ? 'No Kids' : kids}
+        {kids == '0 Kids' ? 'No Kids' : kids}
         <BsChevronDown className="text-base text-accent-hover" />
       </Menu.Button>
       <Menu.Items

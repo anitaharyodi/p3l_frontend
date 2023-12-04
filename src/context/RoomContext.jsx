@@ -47,7 +47,7 @@ const RoomProvider = ({ children }) => {
   };
 
   const addToBookingList = (room) => {
-    const index = bookingList.findIndex((item) => item.jenis_kamar === room.jenis_kamar);
+    const index = bookingList.findIndex((item) => item.jenis_kamar == room.jenis_kamar);
 
     if (index !== -1) {
       const updatedBookingList = [...bookingList];
@@ -70,7 +70,7 @@ const RoomProvider = ({ children }) => {
 
   //For reservation Group
   const addToBookingListGroup = (room) => {
-    const index = bookingListGroup.findIndex((item) => item.jenis_kamar === room.jenis_kamar);
+    const index = bookingListGroup.findIndex((item) => item.jenis_kamar == room.jenis_kamar);
 
     if (index !== -1) {
       const updatedBookingList = [...bookingListGroup];

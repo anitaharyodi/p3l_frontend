@@ -53,7 +53,7 @@ const ForgotPassword = () => {
   const handleSendResetEmail = async () => {
     try {
       setIsLoading(true);
-      const apiURL = "http://localhost:8000/api/password/reset/request";
+      const apiURL = "https://ah-project.my.id/api/password/reset/request";
       const requestBody = {
         email: email,
         role: "C",
@@ -61,7 +61,7 @@ const ForgotPassword = () => {
 
       const response = await axios.post(apiURL, requestBody);
 
-      if (response.status === 200) {
+      if (response.status == 200) {
         handleNext();
       } else {
         toast.error("Email not found!", {
@@ -89,7 +89,7 @@ const ForgotPassword = () => {
   const handleSubmitNewPassword = async () => {
     try {
       setIsLoading(true);
-      const apiURL = "http://localhost:8000/api/password/reset";
+      const apiURL = "https://ah-project.my.id/api/password/reset";
       const requestBody = {
         email: email,
         role: "C",
@@ -100,7 +100,7 @@ const ForgotPassword = () => {
       console.log("TOKEN", token);
       const response = await axios.post(apiURL, requestBody);
 
-      if (response.status === 200) {
+      if (response.status == 200) {
         toast.success("Success reset password!", {
           position: "top-right",
           hideProgressBar: true,
@@ -148,7 +148,7 @@ const ForgotPassword = () => {
 
                   <h3 className="h3 text-left text-white">Forgot Password</h3>
                 </div>
-                {step === 1 && (
+                {step == 1 && (
                   <div>
                     <p className="font-tertiary font-semibold text-white tracking-[2px] text-left mb-2 mt-10">
                       Enter your email to reset your password.
@@ -174,7 +174,7 @@ const ForgotPassword = () => {
                   </div>
                 )}
 
-                {step === 2 && (
+                {step == 2 && (
                   <div>
                     <p className="text-gray-300 text-[14px] text-left mb-2">
                       We've sent an email to the address you provided. Please
@@ -193,7 +193,7 @@ const ForgotPassword = () => {
                   </div>
                 )}
 
-                {step === 3 && (
+                {step == 3 && (
                   <div>
                     <p className="font-tertiary font-semibold text-white tracking-[2px] text-left mb-2 mt-6">
                       Input New Password
@@ -222,7 +222,7 @@ const ForgotPassword = () => {
                 )}
 
                 <div>
-                  {step === 2 && (
+                  {step == 2 && (
                     <div className="flex justify-between mt-6">
                       
                       <button
@@ -241,7 +241,7 @@ const ForgotPassword = () => {
                       </button>
                     </div>
                   )}
-                  {step === 3 && (
+                  {step == 3 && (
                     <div className="flex justify-between mt-6">
                       <button
                         className="btn btn-lg btn-tertiary h-[40px] rounded-md"

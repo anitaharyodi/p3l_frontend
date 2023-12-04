@@ -31,7 +31,7 @@ const SearchBookRoom = () => {
   const isFormEmpty = !tglCheckin || !tglCheckOut;
 
   useEffect(() => {
-    const apiURL = `http://localhost:8000/api/tarifBySeason?tgl_checkin=${formattedDateCheckin}&tgl_checkout=${formattedDateCheckout}`;
+    const apiURL = `https://ah-project.my.id/api/tarifBySeason?tgl_checkin=${formattedDateCheckin}&tgl_checkout=${formattedDateCheckout}`;
     axios
       .get(apiURL)
       .then((response) => {
@@ -48,7 +48,7 @@ const SearchBookRoom = () => {
   }, [tglCheckin, tglCheckOut]);
 
   useEffect(() => {
-    const apiURL = `http://localhost:8000/api/ketersediaanKamar?tgl_checkin=${formattedDateCheckin}&tgl_checkout=${formattedDateCheckout}`;
+    const apiURL = `https://ah-project.my.id/api/ketersediaanKamar?tgl_checkin=${formattedDateCheckin}&tgl_checkout=${formattedDateCheckout}`;
     axios
       .get(apiURL)
       .then((response) => {
@@ -63,7 +63,6 @@ const SearchBookRoom = () => {
         console.error("Error fetching data from the API: " + error);
       });
   }, [tglCheckin, tglCheckOut]);
-
   return (
     <section>
       <ScrollToTop />
@@ -103,9 +102,8 @@ const SearchBookRoom = () => {
             <div className="mb-6">
               {jenisKamarBySeason.map((item, index) => {
                 const totalKamar = ketersediaanKamar?.find(
-                  (kk) => kk.id_jenis_kamar === item.id
+                  (kk) => kk.id_jenis_kamar == item.id
                 )?.totalKamar;
-
                 if (totalKamar > 0) {
                   return (
                     <CardFindRoom

@@ -30,7 +30,7 @@ const RoomDetails = () => {
   const evenArray = [];
 
   deskripsi_kamar_array?.forEach((item, index) => {
-    if (index % 2 === 0) {
+    if (index % 2 == 0) {
       evenArray.push(item);
     } else {
       oddArray.push(item);

@@ -31,6 +31,12 @@ ChartJS.register(
 const Report2 = () => {
   const authToken = localStorage.getItem("tokenPegawai");
   const [reportData, setReportData] = useState([]);
+  const [today, setToday] = useState(new Date())
+
+  const formatDate = (dateString) => {
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-GB", options);
+  };
 
   const formatCurrency = (number) => {
     return `Rp ${new Intl.NumberFormat("id-ID").format(number)}`;
@@ -43,7 +49,7 @@ const Report2 = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/totalPendapatan";
+    const apiURL = "https://ah-project.my.id/api/totalPendapatan";
 
     axios
       .get(apiURL, axiosConfig)
@@ -202,6 +208,7 @@ const Report2 = () => {
       <div className="mb-8 flex justify-center h-[500px]">
         <Bar data={chartData} options={chartOptions} />
       </div>
+      <p className="text-right pb-5">dicetak tanggal {formatDate(today)}</p>
     </section>
   );
 };

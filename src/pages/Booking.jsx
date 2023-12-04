@@ -53,7 +53,7 @@ const Booking = () => {
   };
 
   const handleCheckboxChange = (e) => {
-    if (e.target.value === "other") {
+    if (e.target.value == "other") {
       setShowOtherTextArea(e.target.checked);
       setOtherRequest("")
     }
@@ -94,7 +94,7 @@ const Booking = () => {
         Authorization: `Bearer ${authToken}`,
       },
     };
-    const apiURL = `http://localhost:8000/api/history/${id}`;
+    const apiURL = `https://ah-project.my.id/api/history/${id}`;
     axios
       .get(apiURL, axiosConfig)
       .then((response) => {
@@ -115,7 +115,7 @@ const Booking = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/fasilitas";
+    const apiURL = "https://ah-project.my.id/api/fasilitas";
 
     axios
       .get(apiURL, axiosConfig)
@@ -203,7 +203,7 @@ const Booking = () => {
       }, 
     };
 
-    const apiURL = `http://localhost:8000/api/transaksiFasilitas/${id}`
+    const apiURL = `https://ah-project.my.id/api/transaksiFasilitas/${id}`
     axios
       .post(apiURL, requestData, axiosConfig)
       .then((response) => {
@@ -217,7 +217,7 @@ const Booking = () => {
         special_req : otherRequest
       }
 
-      const apiURLReservasi = `http://localhost:8000/api/reservasi/${id}`
+      const apiURLReservasi = `https://ah-project.my.id/api/reservasi/${id}`
       axios
       .post(apiURLReservasi, body, axiosConfig)
       .then((response) => {
@@ -240,7 +240,7 @@ const Booking = () => {
         },
       };
 
-      const apiURLReservasi = `http://localhost:8000/api/reservasi/${id}`
+      const apiURLReservasi = `https://ah-project.my.id/api/reservasi/${id}`
       axios
       .post(apiURLReservasi, body, axiosConfig)
       .then((response) => {
@@ -269,7 +269,7 @@ const Booking = () => {
       },
     };
 
-    const apiURL = `http://localhost:8000/api/transaksiFasilitas/${id}`
+    const apiURL = `https://ah-project.my.id/api/transaksiFasilitas/${id}`
 
     axios
       .post(apiURL, requestData, axiosConfig)
@@ -313,7 +313,7 @@ const Booking = () => {
         },
       };
 
-      const apiURL = `http://localhost:8000/api/reservasi/upload-pembayaran/${id}`;
+      const apiURL = `https://ah-project.my.id/api/reservasi/upload-pembayaran/${id}`;
       axios
         .post(apiURL, body, axiosConfig)
         .then((response) => {
@@ -367,7 +367,7 @@ const Booking = () => {
           >
             <BreadcrumbItem
               className={`mx-4 ${
-                activeStep === "booking"
+                activeStep == "booking"
                   ? "font-semibold text-white"
                   : "text-white/60"
               }`}
@@ -376,7 +376,7 @@ const Booking = () => {
             </BreadcrumbItem>
             <BreadcrumbItem
               className={`mx-4 ${
-                activeStep === "review"
+                activeStep == "review"
                   ? "font-semibold text-white"
                   : "text-white/60"
               }`}
@@ -385,7 +385,7 @@ const Booking = () => {
             </BreadcrumbItem>
             <BreadcrumbItem
               className={`mx-4 ${
-                activeStep === "payment"
+                activeStep == "payment"
                   ? "font-semibold text-white"
                   : "text-white/60"
               }`}
@@ -396,7 +396,7 @@ const Booking = () => {
         </div>
       </div>
       <div className="container mx-auto">
-        {activeStep === "booking" ? (
+        {activeStep == "booking" ? (
           <>
             <h3 className="h3 mt-6">Room Booking Details</h3>
             <p className="font-secondary font-semibold text-[16px] text-gray-500">
@@ -614,7 +614,7 @@ const Booking = () => {
 
 
           // Review Page
-        ) : activeStep === "review" ? (
+        ) : activeStep == "review" ? (
           <>
             <ScrollToTop />
             <h3 className="h3 mt-6">Please Review Your Booking</h3>
@@ -822,7 +822,7 @@ const Booking = () => {
                 <h3 className="h3 text-[20px]">ID Booking #{reservation?.id_booking}</h3>
               </div>
               {bookRoom.filter((room, index, self) => {
-                  return self.findIndex((r) => r.id_jenis_kamar === room.id_jenis_kamar) === index;
+                  return self.findIndex((r) => r.id_jenis_kamar == room.id_jenis_kamar) == index;
                 })
                 .map((room, index) => {
                   return (

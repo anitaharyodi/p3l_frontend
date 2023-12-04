@@ -29,7 +29,7 @@ const MyBooking = () => {
         Authorization: `Bearer ${authToken}`,
       },
     };
-    const apiURL = "http://localhost:8000/api/history";
+    const apiURL = "https://ah-project.my.id/api/history";
     axios
       .get(apiURL, axiosConfig)
       .then((response) => {

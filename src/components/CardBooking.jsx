@@ -51,7 +51,7 @@ const CardBooking = ({
         Authorization: `Bearer ${authToken}`,
       },
     };
-    const apiURL = `http://localhost:8000/api/history/${id}`;
+    const apiURL = `https://ah-project.my.id/api/history/${id}`;
     axios
       .get(apiURL, axiosConfig)
       .then((response) => {
@@ -116,12 +116,12 @@ const CardBooking = ({
         },
       };
 
-      const apiURL = `http://localhost:8000/api/reservasi/pemesananBatal/${id}`;
+      const apiURL = `https://ah-project.my.id/api/reservasi/pemesananBatal/${id}`;
       axios
         .post(apiURL, null, axiosConfig)
         .then((response) => {
           console.log(JSON.stringify(response, null, 2))
-          if(response.status === 200) {
+          if(response.status == 200) {
             toast.success('Your booking has been cancelled!', {
               position: 'top-right',
               hideProgressBar: true,
@@ -145,7 +145,7 @@ const CardBooking = ({
       },
       responseType: 'blob',
     };
-    const apiURL = `http://localhost:8000/api/generate-pdf/${id}`;
+    const apiURL = `https://ah-project.my.id/api/generate-pdf/${id}`;
     
     axios
       .get(apiURL, axiosConfig)
@@ -177,13 +177,13 @@ const CardBooking = ({
         <h2 className="text-xl font-semibold text-[#1E2131]">{idBooking}</h2>
         <Chip
           color={
-            status === "Paid"
+            status == "Paid"
               ? "success"
-              : status === "Waiting for payment"
+              : status == "Waiting for payment"
               ? "warning"
-              : status === "Confirmed"
+              : status == "Confirmed"
               ? "secondary"
-              : status === "Check-In"
+              : status == "Check-In"
               ? "primary"
               : "danger"
           }
@@ -225,7 +225,7 @@ const CardBooking = ({
       </div>
       {/* <div className="border-t-2 border-gray-300 mt-4"></div> */}
       <div className="flex justify-between mt-2">
-        {tglPembayaran === '1 January 1970' ? (
+        {tglPembayaran == '1 January 1970' ? (
           <p className="text-gray-500 mt-3">Payment Date : -</p>
           ) : (
             <p className="text-gray-500 mt-3">Payment Date : {tglPembayaran}</p>
@@ -261,7 +261,7 @@ const CardBooking = ({
           <ModalContent>
             <ModalHeader className="flex justify-between">
               <p>Detail Reservation</p>
-              {status == "Confirmed" || status === "Check In" ? (
+              {status == "Confirmed" || status == "Check In" ? (
               <div>
               <button className="text-[14px] bg-[#1E2131] text-white px-2 py-1 rounded-md mr-6 flex items-center" onClick={() => getPDF()}>
                 <BiSolidDownload className="mr-2"/>
@@ -276,13 +276,13 @@ const CardBooking = ({
                 <h2 className="h2 text-[20px] font-bold">Booking ID #{idBooking}</h2> 
                 <Chip
                   color={
-                    status === "Paid"
+                    status == "Paid"
                       ? "success"
-                      : status === "Waiting for payment"
+                      : status == "Waiting for payment"
                       ? "warning"
-                      : status === "Confirmed"
+                      : status == "Confirmed"
                       ? "secondary"
-                      : status === "Check-In"
+                      : status == "Check-In"
                       ? "primary"
                       : "danger"
                   }
@@ -369,7 +369,7 @@ const CardBooking = ({
                   <p className="font-semibold">Payment Date</p>
                 </div>
                 <div>
-                {tglPembayaran === '1 January 1970' ? (
+                {tglPembayaran == '1 January 1970' ? (
                     <p className="">-</p>
                     ) : (
                       <p className="">{tglPembayaran}</p>
@@ -416,7 +416,7 @@ const CardBooking = ({
               ): ""}
             </ModalBody>
             <ModalFooter className="flex justify-center items-center">
-              {status == "Waiting for payment" || status === "Confirmed" ? (
+              {status == "Waiting for payment" || status == "Confirmed" ? (
               <button className="text-danger-500 font-medium" onClick={() => openCancelModal()}>
                 Cancelled this booking
               </button>

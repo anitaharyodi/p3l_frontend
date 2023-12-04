@@ -71,7 +71,7 @@ const BookingListGroup = ({id}) => {
       jenis_kamar: transformedBookingList,
     };
 
-    const apiURL = "http://localhost:8000/api/reservasi";
+    const apiURL = "https://ah-project.my.id/api/reservasi";
     axios
       .post(apiURL, body, {
         headers: {
@@ -105,12 +105,12 @@ const BookingListGroup = ({id}) => {
           Booking List
         </p>
       </div>
-      {bookingListGroup.length === 0 && (
+      {bookingListGroup.length == 0 && (
         <><div className="flex justify-center items-center">
           <img src={assets.EMPTYDATA} width={150}/>
         </div><p className="-mt-10 text-center font-semibold text-gray-500 text-[16px]">Please choose your room first</p></>
       )}
-      <div className={`${bookingListGroup.length === 1 ? "-mt-[130px]" : ""}`}>
+      <div className={`${bookingListGroup.length == 1 ? "-mt-[130px]" : ""}`}>
         {bookingListGroup.map((booking, index) => (
           <div key={booking.jenis_kamar}>
             <div className="pt-6 px-6 flex items-center">

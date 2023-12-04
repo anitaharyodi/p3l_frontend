@@ -93,7 +93,7 @@ const CustomerStay = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/dataReservasi";
+    const apiURL = "https://ah-project.my.id/api/dataReservasi";
 
     axios
       .get(apiURL, axiosConfig)
@@ -226,7 +226,7 @@ const CustomerStay = () => {
     checkinDate.setHours(0, 0, 0, 0);
 
     if (
-      currentDate.getTime() === checkinDate.getTime() ||
+      currentDate.getTime() == checkinDate.getTime() ||
       currentDate.getHours() >= 14
     ) {
       return true;
@@ -243,7 +243,7 @@ const CustomerStay = () => {
     checkoutDate.setHours(0, 0, 0, 0);
 
     if (
-      currentDate.getTime() === checkoutDate.getTime() &&
+      currentDate.getTime() == checkoutDate.getTime() &&
       currentDate.getHours() <= 12
     ) {
       return true;
@@ -277,7 +277,7 @@ const CustomerStay = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/fasilitas";
+    const apiURL = "https://ah-project.my.id/api/fasilitas";
 
     axios
       .get(apiURL, axiosConfig)
@@ -310,7 +310,7 @@ const CustomerStay = () => {
 
   const handleDateChange = (id, dateValue) => {
     const selectedReservation = reservationData.find(
-      (reservation) => reservation.id === currentFacilityId
+      (reservation) => reservation.id == currentFacilityId
     );
 
     const tglCheckinDate = new Date(selectedReservation.tgl_checkin);
@@ -337,7 +337,7 @@ const CustomerStay = () => {
       },
       responseType: "blob",
     };
-    const apiURL = `http://localhost:8000/api/invoice-pdf/${idReservation}`;
+    const apiURL = `https://ah-project.my.id/api/invoice-pdf/${idReservation}`;
 
     axios
       .get(apiURL, axiosConfig)
@@ -391,7 +391,7 @@ const CustomerStay = () => {
       },
     };
 
-    const apiURL = `http://localhost:8000/api/transaksiFasilitas/${currentFacilityId}`;
+    const apiURL = `https://ah-project.my.id/api/transaksiFasilitas/${currentFacilityId}`;
 
     axios
       .post(apiURL, requestData, axiosConfig)
@@ -423,7 +423,7 @@ const CustomerStay = () => {
         Authorization: `Bearer ${authToken}`,
       },
     };
-    const apiURL = `http://localhost:8000/api/history/${reservationId}`;
+    const apiURL = `https://ah-project.my.id/api/history/${reservationId}`;
     console.log(reservationId);
     axios
       .get(apiURL, axiosConfig)
@@ -442,7 +442,7 @@ const CustomerStay = () => {
       input_bayar: inputPayment,
     };
 
-    const apiURL = `http://localhost:8000/api/checkout/${currentFacilityId}`;
+    const apiURL = `https://ah-project.my.id/api/checkout/${currentFacilityId}`;
 
     axios
       .post(apiURL, body, {
@@ -451,7 +451,7 @@ const CustomerStay = () => {
         },
       })
       .then((response) => {
-        if (response.data.status === "F") {
+        if (response.data.status == "F") {
           toast.error(response.data.message, {
             position: "top-right",
             hideProgressBar: true,
@@ -478,7 +478,7 @@ const CustomerStay = () => {
       });
   };
 
-  // const currentItem = items.find(item => item.id === currentFacilityId);
+  // const currentItem = items.find(item => item.id == currentFacilityId);
 
   // console.log("ISI ITEM", JSON.stringify(items, null, 2));
   return (
@@ -545,9 +545,9 @@ const CustomerStay = () => {
               <TableCell className="text-medium">
                 <Chip
                   color={
-                    item.status === "Paid"
+                    item.status == "Paid"
                       ? "success"
-                      : item.status === "Confirmed"
+                      : item.status == "Confirmed"
                       ? "secondary"
                       : "primary"
                   }
@@ -558,7 +558,7 @@ const CustomerStay = () => {
               </TableCell>
               <TableCell className="w-[50px]">
                 <div className="flex">
-                  {item.status === "Confirmed" ? (
+                  {item.status == "Confirmed" ? (
                     !isCheckInEnabled(item) ? (
                       <Link
                         className="font-secondary text-gray-500 text-center bg-gray-300 font-medium rounded-md py-2 px-2 w-[100px] flex-none cursor-default"
@@ -577,7 +577,7 @@ const CustomerStay = () => {
                         Check-In
                       </Link>
                     )
-                  ) : item.status === "Check-In" ? (
+                  ) : item.status == "Check-In" ? (
                     isStay(item) ? (
                       <Link
                         className="font-secondary text-white text-center bg-primary-500 font-medium rounded-md py-2 px-2 w-[100px] flex-none"
@@ -723,14 +723,14 @@ const CustomerStay = () => {
       >
         <ModalContent>
           {items
-            ?.filter((item) => item.id === currentFacilityId)
+            ?.filter((item) => item.id == currentFacilityId)
             .map((item, i) => (
               <ModalHeader key={item.id} className="flex justify-between">
                 <p>Detail Reservation</p>
               </ModalHeader>
             ))}
           {items
-            ?.filter((item) => item.id === currentFacilityId)
+            ?.filter((item) => item.id == currentFacilityId)
             .map((item, i) => (
               <ModalBody key={item.id}>
                 <>
@@ -740,13 +740,13 @@ const CustomerStay = () => {
                     </h2>
                     <Chip
                       color={
-                        item.status === "Paid"
+                        item.status == "Paid"
                           ? "success"
-                          : item.status === "Waiting for payment"
+                          : item.status == "Waiting for payment"
                           ? "warning"
-                          : item.status === "Confirmed"
+                          : item.status == "Confirmed"
                           ? "secondary"
-                          : item.status === "Check-In"
+                          : item.status == "Check-In"
                           ? "primary"
                           : "danger"
                       }
@@ -843,7 +843,7 @@ const CustomerStay = () => {
                       <p className="font-semibold">Payment Date</p>
                     </div>
                     <div>
-                      {item.tgl_pembayaran === null ? (
+                      {item.tgl_pembayaran == null ? (
                         <p className="">-</p>
                       ) : (
                         <p className="">{formatDate(item.tgl_pembayaran)}</p>
@@ -886,12 +886,12 @@ const CustomerStay = () => {
 
                             const filteredItems = bookRoom.filter(
                               (item) =>
-                                item.jenis_kamars.jenis_kamar ===
+                                item.jenis_kamars.jenis_kamar ==
                                 jenisKamar
                             );
 
                             const reservationFiltered = items?.filter(
-                              (item) => item.id === currentFacilityId
+                              (item) => item.id == currentFacilityId
                             );
 
                             const tgl_checkin = new Date(
@@ -1147,16 +1147,16 @@ const CustomerStay = () => {
               Change Money: {formatCurrency(kembalian)}
             </p>
             <div>
-              {items.find((item) => item.id === currentFacilityId) && (
+              {items.find((item) => item.id == currentFacilityId) && (
                 <div className="flex justify-center mx-auto">
-                  {items.find((item) => item.id === currentFacilityId).invoices
+                  {items.find((item) => item.id == currentFacilityId).invoices
                     .length >= 0 && (
                     <button
                       className="border-1 border-[#1E2131] text-[#1E2131] font-semibold w-[200px] h-[40px] rounded-md"
                       onClick={() =>
                         getPDF(
                           currentFacilityId,
-                          items.find((item) => item.id === currentFacilityId)
+                          items.find((item) => item.id == currentFacilityId)
                             .invoices[0]?.no_invoice
                         )
                       }

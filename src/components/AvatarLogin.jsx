@@ -28,7 +28,7 @@ const AvatarLogin = () => {
         return;
       }
 
-      const apiURL = 'http://localhost:8000/api/logout';
+      const apiURL = 'https://ah-project.my.id/api/logout';
 
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -36,7 +36,7 @@ const AvatarLogin = () => {
 
       const response = await axios.post(apiURL, null, { headers });
 
-      if (response.status === 200) {
+      if (response.status == 200) {
         localStorage.removeItem("token");
         localStorage.removeItem("email");
         setIsLogin(false)

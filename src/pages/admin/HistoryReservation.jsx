@@ -145,7 +145,7 @@ const HistoryReservation = () => {
       },
     };
 
-    const apiURL = `http://localhost:8000/api/customer/${id}`;
+    const apiURL = `https://ah-project.my.id/api/customer/${id}`;
 
     axios
       .get(apiURL, axiosConfig)
@@ -163,7 +163,7 @@ const HistoryReservation = () => {
         Authorization: `Bearer ${authToken}`,
       },
     };
-    const apiURL = `http://localhost:8000/api/history/${reservationId}`;
+    const apiURL = `https://ah-project.my.id/api/history/${reservationId}`;
     console.log(reservationId);
     axios
       .get(apiURL, axiosConfig)
@@ -236,13 +236,13 @@ const HistoryReservation = () => {
       },
     };
 
-    const apiURL = `http://localhost:8000/api/reservasi/pemesananBatal/${idReservation}`;
+    const apiURL = `https://ah-project.my.id/api/reservasi/pemesananBatal/${idReservation}`;
 
     axios
       .post(apiURL, null, axiosConfig)
       .then((response) => {
         console.log(JSON.stringify(response, null, 2));
-        if (response.status === 200) {
+        if (response.status == 200) {
           toast.success("The booking has been cancelled!", {
             position: "top-right",
             hideProgressBar: true,
@@ -265,7 +265,7 @@ const HistoryReservation = () => {
       },
       responseType: 'blob',
     };
-    const apiURL = `http://localhost:8000/api/generate-pdf/${idReservation}`;
+    const apiURL = `https://ah-project.my.id/api/generate-pdf/${idReservation}`;
     
     axios
       .get(apiURL, axiosConfig)
@@ -351,13 +351,13 @@ const HistoryReservation = () => {
               <TableCell className="text-medium">
                 <Chip
                   color={
-                    item.status === "Paid"
+                    item.status == "Paid"
                       ? "success"
-                      : item.status === "Waiting for payment"
+                      : item.status == "Waiting for payment"
                       ? "warning"
-                      : item.status === "Confirmed"
+                      : item.status == "Confirmed"
                       ? "secondary"
-                      : item.status === "Check-In"
+                      : item.status == "Check-In"
                       ? "primary"
                       : "danger"
                   }
@@ -383,7 +383,7 @@ const HistoryReservation = () => {
                         See Details
                       </DropdownItem>
 
-                      {item.status === "Waiting for payment" && (
+                      {item.status == "Waiting for payment" && (
                         <DropdownItem
                           color="warning"
                           startContent={<GiReceiveMoney />}
@@ -396,8 +396,8 @@ const HistoryReservation = () => {
                       )}
                     </DropdownMenu>
                   </Dropdown>
-                  {item.status === "Waiting for payment" ||
-                  item.status === "Confirmed" ? (
+                  {item.status == "Waiting for payment" ||
+                  item.status == "Confirmed" ? (
                     <button onClick={() => openCancelModalWithId(item.id)}>
                       <IoCloseSharp className="text-danger-500 ml-3 text-lg " />
                     </button>
@@ -418,11 +418,11 @@ const HistoryReservation = () => {
       >
         <ModalContent>
         {items
-            ?.filter((item) => item.id === currentHistoryId)
+            ?.filter((item) => item.id == currentHistoryId)
             .map((item, i) => (
         <ModalHeader key={item.id} className="flex justify-between">
               <p>Detail Reservation</p>
-              {item.status == "Confirmed" || item.status === "Check In" ? (
+              {item.status == "Confirmed" || item.status == "Check In" ? (
               <div>
               <button className="text-[14px] bg-[#1E2131] text-white px-2 py-1 rounded-md mr-6 flex items-center" onClick={() => getPDF(item.id, item.id_booking)}>
                 <BiSolidDownload className="mr-2"/>
@@ -434,7 +434,7 @@ const HistoryReservation = () => {
             </ModalHeader>
             ))}
           {items
-            ?.filter((item) => item.id === currentHistoryId)
+            ?.filter((item) => item.id == currentHistoryId)
             .map((item, i) => (
               <ModalBody key={item.id}>
                 <>
@@ -444,13 +444,13 @@ const HistoryReservation = () => {
                     </h2>
                     <Chip
                       color={
-                        item.status === "Paid"
+                        item.status == "Paid"
                           ? "success"
-                          : item.status === "Waiting for payment"
+                          : item.status == "Waiting for payment"
                           ? "warning"
-                          : item.status === "Confirmed"
+                          : item.status == "Confirmed"
                           ? "secondary"
-                          : item.status === "Check-In"
+                          : item.status == "Check-In"
                           ? "primary"
                           : "danger"
                       }
@@ -547,7 +547,7 @@ const HistoryReservation = () => {
                       <p className="font-semibold">Payment Date</p>
                     </div>
                     <div>
-                      {item.tgl_pembayaran === null ? (
+                      {item.tgl_pembayaran == null ? (
                         <p className="">-</p>
                       ) : (
                         <p className="">{formatDate(item.tgl_pembayaran)}</p>
@@ -591,7 +591,7 @@ const HistoryReservation = () => {
                             const totalKamar = jenisKamarCounts[jenisKamar];
                             const filteredItems = bookRoom.filter(
                               (item) =>
-                                item.jenis_kamars.jenis_kamar === jenisKamar
+                                item.jenis_kamars.jenis_kamar == jenisKamar
                             );
                             const hargaPerMalamTotal = filteredItems.reduce(
                               (total, item) =>
@@ -675,7 +675,7 @@ const HistoryReservation = () => {
             </p>
           </ModalBody>
           {items
-            ?.filter((item) => item.id === currentHistoryId)
+            ?.filter((item) => item.id == currentHistoryId)
             .map((item, i) => (
               <ModalFooter key={item.id}>
                 <button

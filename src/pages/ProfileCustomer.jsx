@@ -55,7 +55,7 @@ const ProfileCustomer = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/getProfile";
+    const apiURL = "https://ah-project.my.id/api/getProfile";
 
     axios
       .get(apiURL, axiosConfig)
@@ -90,7 +90,7 @@ const ProfileCustomer = () => {
       role: "P",
     };
 
-    const apiURL = "http://localhost:8000/api/customer/updateProfile";
+    const apiURL = "https://ah-project.my.id/api/customer/updateProfile";
     axios
       .post(apiURL, updatedData, {
         headers: {
@@ -119,7 +119,7 @@ const ProfileCustomer = () => {
       password: newPassword,
     };
 
-    const apiURL = "http://localhost:8000/api/customer/changePassword";
+    const apiURL = "https://ah-project.my.id/api/customer/changePassword";
     axios
       .post(apiURL, updatedData, {
         headers: {

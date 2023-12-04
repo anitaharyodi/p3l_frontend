@@ -84,7 +84,7 @@ const Login = () => {
         return;
       }
 
-      const apiURL = "http://localhost:8000/api/login";
+      const apiURL = "https://ah-project.my.id/api/login";
 
       const requestBody = {
         email: email,
@@ -93,7 +93,7 @@ const Login = () => {
 
       const response = await axios.post(apiURL, requestBody);
 
-      if (response.status === 200) {
+      if (response.status == 200) {
         toast.success("Login Successful", {
           position: "top-right",
           hideProgressBar: true,
@@ -176,7 +176,7 @@ const Login = () => {
         return;
       }
 
-      const apiURL = "http://localhost:8000/api/register";
+      const apiURL = "https://ah-project.my.id/api/register";
 
       const requestBody = {
         nama: name,
@@ -190,7 +190,7 @@ const Login = () => {
 
       const response = await axios.post(apiURL, requestBody);
 
-      if (response.status === 200) {
+      if (response.status == 200) {
         toast.success("Register Successful", {
           position: "top-right",
           hideProgressBar: true,

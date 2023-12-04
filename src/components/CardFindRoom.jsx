@@ -14,7 +14,6 @@ const CardFindRoom = ({jenisKamarBySeason, imgIndex, ketersediaanKamar}) => {
   const { addToBookingList, removeFromBookingList, tglCheckin, tglCheckOut, clearBookingList } = useContext(RoomContext)
   const [quantity, setQuantity] = useState(0);
   const navigate = useNavigate()
-
   const tipe_bed_array = jenisKamarBySeason.tipe_bed?.split("\r\n").join(', ');
   const rincian_kamar_array = jenisKamarBySeason.rincian_kamar?.split("\r\n");
   const imageUrl = roomImages[imgIndex];
@@ -144,7 +143,7 @@ const CardFindRoom = ({jenisKamarBySeason, imgIndex, ketersediaanKamar}) => {
               <button
                 className="px-3 py-1 border-1 hover:bg-gray-100  hover:text-gray-700 rounded-l-sm focus:outline-none"
                 onClick={() => setQuantity(quantity > 0 ? quantity - 1 : 0)}
-                disabled={quantity === 0}
+                disabled={quantity == 0}
               >
                 -
               </button>
@@ -158,7 +157,7 @@ const CardFindRoom = ({jenisKamarBySeason, imgIndex, ketersediaanKamar}) => {
               <button
                 className="px-3 py-1 border-1 hover:bg-gray-100  hover:text-gray-700 rounded-r-sm focus:outline-none"
                 onClick={() => setQuantity(quantity + 1)}
-                disabled={quantity === ketersediaanKamar}
+                disabled={quantity == ketersediaanKamar}
               >
                 +
               </button>

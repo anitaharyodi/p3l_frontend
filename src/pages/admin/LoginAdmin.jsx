@@ -47,7 +47,7 @@ const LoginAdmin = () => {
         return;
       }
 
-      const apiURL = "http://localhost:8000/api/loginPegawai";
+      const apiURL = "https://ah-project.my.id/api/loginPegawai";
 
       const requestBody = {
         email: email,
@@ -56,7 +56,7 @@ const LoginAdmin = () => {
 
       const response = await axios.post(apiURL, requestBody);
 
-      if (response.status === 200) {
+      if (response.status == 200) {
         toast.success("Login Successful", {
           position: "top-right",
           hideProgressBar: true,
@@ -72,7 +72,7 @@ const LoginAdmin = () => {
         const getRole = localStorage.getItem("role");
         console.log("EMAIL", getRole);
         setIsLoginPegawai(true);
-        {getRole === 'Admin' ? (
+        {getRole == 'Admin' ? (
           navigate("/home/room")
         ) : 
           navigate("/home")

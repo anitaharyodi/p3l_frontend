@@ -98,7 +98,7 @@ const SeasonPage = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/season";
+    const apiURL = "https://ah-project.my.id/api/season";
 
     axios
       .get(apiURL, axiosConfig)
@@ -189,7 +189,7 @@ const SeasonPage = () => {
           Authorization: `Bearer ${authToken}`,
         },
       };
-      const apiURL = `http://localhost:8000/api/season/${currentSeasonId}`;
+      const apiURL = `https://ah-project.my.id/api/season/${currentSeasonId}`;
 
       axios
         .get(apiURL, axiosConfig)
@@ -253,7 +253,7 @@ const SeasonPage = () => {
       tanggal_selesai: formattedDateSelesai,
     };
 
-    const apiURL = "http://localhost:8000/api/season";
+    const apiURL = "https://ah-project.my.id/api/season";
 
     const axiosConfig = {
       headers: {
@@ -263,7 +263,7 @@ const SeasonPage = () => {
     console.log("BODYYY", body);
 
     const isDuplicate = seasonData.some(
-      (season) => season.nama_season === currentSeasonData.nama_season
+      (season) => season.nama_season == currentSeasonData.nama_season
     );
     if (isDuplicate) {
       toast.error("Season name must be unique", {
@@ -351,7 +351,7 @@ const SeasonPage = () => {
       tanggal_selesai: formattedDateSelesai,
     };
 
-    const apiURL = `http://localhost:8000/api/season/${seasonId}`;
+    const apiURL = `https://ah-project.my.id/api/season/${seasonId}`;
     axios
       .post(apiURL, body, {
         headers: {
@@ -396,7 +396,7 @@ const SeasonPage = () => {
         Authorization: `Bearer ${authToken}`,
       },
     };
-    const apiURL = `http://localhost:8000/api/season/${seasonId}`;
+    const apiURL = `https://ah-project.my.id/api/season/${seasonId}`;
 
     axios
       .delete(apiURL, axiosConfig)
@@ -487,7 +487,7 @@ const SeasonPage = () => {
               <TableCell className="text-medium">
                 <Chip
                   className={
-                    item.jenis_season === "Low"
+                    item.jenis_season == "Low"
                       ? "bg-warning-500 text-white"
                       : "bg-danger-500 text-white"
                   }

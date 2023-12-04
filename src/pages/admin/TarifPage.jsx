@@ -102,7 +102,7 @@ const TarifPage = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/tarifSeason";
+    const apiURL = "https://ah-project.my.id/api/tarifSeason";
 
     axios
       .get(apiURL, axiosConfig)
@@ -126,7 +126,7 @@ const TarifPage = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/jenisKamar";
+    const apiURL = "https://ah-project.my.id/api/jenisKamar";
 
     axios
       .get(apiURL, axiosConfig)
@@ -146,7 +146,7 @@ const TarifPage = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/season";
+    const apiURL = "https://ah-project.my.id/api/season";
 
     axios
       .get(apiURL, axiosConfig)
@@ -212,7 +212,7 @@ const TarifPage = () => {
           Authorization: `Bearer ${authToken}`,
         },
       };
-      const apiURL = `http://localhost:8000/api/tarifSeason/${currentTarifId}`;
+      const apiURL = `https://ah-project.my.id/api/tarifSeason/${currentTarifId}`;
 
       axios
         .get(apiURL, axiosConfig)
@@ -251,7 +251,7 @@ const TarifPage = () => {
       id_jenis_kamar: currentTarifData.jenis_kamars.id,
     };
 
-    const apiURL = "http://localhost:8000/api/tarifSeason";
+    const apiURL = "https://ah-project.my.id/api/tarifSeason";
 
     const axiosConfig = {
       headers: {
@@ -316,7 +316,7 @@ const TarifPage = () => {
       id_jenis_kamar: currentTarifData.jenis_kamars.id,
     };
 
-    const apiURL = `http://localhost:8000/api/tarifSeason/${tarifId}`;
+    const apiURL = `https://ah-project.my.id/api/tarifSeason/${tarifId}`;
     axios
       .post(apiURL, body, {
         headers: {
@@ -354,7 +354,7 @@ const TarifPage = () => {
         Authorization: `Bearer ${authToken}`,
       },
     };
-    const apiURL = `http://localhost:8000/api/tarifSeason/${tarifId}`;
+    const apiURL = `https://ah-project.my.id/api/tarifSeason/${tarifId}`;
 
     axios
       .delete(apiURL, axiosConfig)
@@ -446,24 +446,24 @@ const TarifPage = () => {
               <TableCell className="text-medium">
                 <Chip
                   className={
-                    item?.jenis_kamars?.jenis_kamar === "Superior"
+                    item?.jenis_kamars?.jenis_kamar == "Superior"
                       ? "bg-[#D0C379] text-white"
-                      : item?.jenis_kamars?.jenis_kamar === "Double Deluxe"
+                      : item?.jenis_kamars?.jenis_kamar == "Double Deluxe"
                       ? "bg-[#587889] text-white"
-                      : item?.jenis_kamars?.jenis_kamar === "Executive Deluxe"
+                      : item?.jenis_kamars?.jenis_kamar == "Executive Deluxe"
                       ? "bg-[#E69B35] text-white"
-                      : item?.jenis_kamars?.jenis_kamar === "Junior Suite"
+                      : item?.jenis_kamars?.jenis_kamar == "Junior Suite"
                       ? "bg-[#334A50] text-white"
                       : "bg-transparent"
                   }
                   startContent={
-                    item?.jenis_kamars?.jenis_kamar === "Superior" ? (
+                    item?.jenis_kamars?.jenis_kamar == "Superior" ? (
                       <TbBrandSupernova className="ml-2" />
-                    ) : item?.jenis_kamars?.jenis_kamar === "Double Deluxe" ? (
+                    ) : item?.jenis_kamars?.jenis_kamar == "Double Deluxe" ? (
                       <FaCheckDouble className="ml-2" />
-                    ) : item?.jenis_kamars?.jenis_kamar === "Executive Deluxe" ? (
+                    ) : item?.jenis_kamars?.jenis_kamar == "Executive Deluxe" ? (
                       <GiDoubled className="ml-2" />
-                    ) : item?.jenis_kamars?.jenis_kamar === "Junior Suite" ? (
+                    ) : item?.jenis_kamars?.jenis_kamar == "Junior Suite" ? (
                       <TiFlowChildren className="ml-2" />
                     ) : null
                   }

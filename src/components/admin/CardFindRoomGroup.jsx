@@ -143,7 +143,7 @@ const CardFindRoomGroup = ({jenisKamarBySeason, imgIndex, ketersediaanKamar}) =>
               <button
                 className="px-2 border-1 hover:bg-gray-100  hover:text-gray-700 rounded-l-sm focus:outline-none"
                 onClick={() => setQuantity(quantity > 0 ? quantity - 1 : 0)}
-                disabled={quantity === 0}
+                disabled={quantity == 0}
               >
                 -
               </button>
@@ -157,7 +157,7 @@ const CardFindRoomGroup = ({jenisKamarBySeason, imgIndex, ketersediaanKamar}) =>
               <button
                 className="px-2 border-1 hover:bg-gray-100  hover:text-gray-700 rounded-r-sm focus:outline-none"
                 onClick={() => setQuantity(quantity + 1)}
-                disabled={quantity === ketersediaanKamar}
+                disabled={quantity == ketersediaanKamar}
               >
                 +
               </button>

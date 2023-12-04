@@ -24,7 +24,7 @@ const UploadFile = ({ handleFileSelection }) => {
   };
 
   const isValidFileType = (file) => {
-    return file && (file.type === "image/jpeg" || file.type === "image/jpg" || file.type === "image/png");
+    return file && (file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/png");
   };
 
   const removeFile = () => {

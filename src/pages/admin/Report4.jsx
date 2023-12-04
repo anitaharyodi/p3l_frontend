@@ -6,6 +6,13 @@ const Report4 = () => {
   const authToken = localStorage.getItem("tokenPegawai");
   const [reportData, setReportData] = useState([]);
 
+  const [today, setToday] = useState(new Date())
+
+  const formatDate = (dateString) => {
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-GB", options);
+  };
+
   const formatCurrency = (number) => {
     return `Rp ${new Intl.NumberFormat("id-ID").format(number)}`;
   };
@@ -17,7 +24,7 @@ const Report4 = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/topCustomer";
+    const apiURL = "https://ah-project.my.id/api/topCustomer";
 
     axios
       .get(apiURL, axiosConfig)
@@ -84,6 +91,7 @@ const Report4 = () => {
           ))}
         </TableBody>
       </Table>
+      <p className="text-right py-5">dicetak tanggal {formatDate(today)}</p>
     </section>
   )
 }

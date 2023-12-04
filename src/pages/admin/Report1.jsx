@@ -12,6 +12,11 @@ import React, { useEffect, useState } from "react";
 const Report1 = () => {
   const authToken = localStorage.getItem("tokenPegawai");
   const [reportData, setReportData] = useState([]);
+  const [today, setToday] = useState(new Date())
+  const formatDate = (dateString) => {
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-GB", options);
+  };
 
   const fetchReportData = () => {
     const axiosConfig = {
@@ -20,7 +25,7 @@ const Report1 = () => {
       },
     };
 
-    const apiURL = "http://localhost:8000/api/customersPerMonth";
+    const apiURL = "https://ah-project.my.id/api/customersPerMonth";
 
     axios
       .get(apiURL, axiosConfig)
@@ -87,6 +92,7 @@ const Report1 = () => {
           <p className="mr-[33%] font-semibold text-lg">{totalSum}</p>
         </div>
       </div>
+      <p className="text-right pb-5">dicetak tanggal {formatDate(today)}</p>
     </section>
   );
 };
